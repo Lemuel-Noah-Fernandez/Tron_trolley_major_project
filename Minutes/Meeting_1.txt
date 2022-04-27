@@ -1,0 +1,15 @@
+Meeting 1:
+Date: 27/04/2022
+
+Present: Lem, Will, Henry, Daniel
+Missing: Duncan
+
+To do today: Figure out what to do for this major project
+
+Ideas:
+Shopping trolley that tracks position on a 2D grid and can direct user to different isles or locations. Overlay position on to a bigger map.
+
+Function that scans shelves and detects if there are missing gaps - requests stock update - When stationary - shelf scan 
+Trip summary data (where are people spending the most time in)
+
+
