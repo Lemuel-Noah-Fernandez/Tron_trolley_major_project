@@ -5,18 +5,28 @@ Present: Lem, Will, Duncan, Daniel
 Missing: Henry
 
 To do today: Consolidate project idea, present to Andre, and allocate modules to individual people
+- Get readings for accelerometer and magnetometer
+- Integration 
 
 Previous Actions::
-N/A
+- Ideated what we are doing
 
 
 Regular Items
-N/A
+- Consolidating idea and refining our limits and goals.
 
 
 New Items
 - Duncan added to github
 - Possible idea of having a magnet in the demo as a restart point
+- Modules:
+	- Converting accelerometer
+	- Mapping 
+	- Sound 
+	- LCD 
+	- Magentometer (maybe)
+- No longer doing the functionality of where our trolley scans stock for missing gaps and requests for stock
+
 
 
 Any Other Business
