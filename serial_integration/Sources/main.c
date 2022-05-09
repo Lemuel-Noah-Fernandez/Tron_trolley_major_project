@@ -7,6 +7,7 @@
 
 #include "pll.h"
 #include "simple_serial.h"
+#include "serialise_send.h"
 
 #include "l3g4200d.h"
 
@@ -110,9 +111,12 @@ void main(void) {
   
 	EnableInterrupts;
   //COPCTL = 7;
+  
+  main_serialise(void);
   _DISABLE_COP();
     
   for(;;) {
+    SendGyroMsg(rot_x, rot_y, rot_z);
   
     #ifndef SIMULATION_TESTING
   

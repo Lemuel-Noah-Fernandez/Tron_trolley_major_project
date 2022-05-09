@@ -60,4 +60,13 @@ void SerialOutputString(char *pt, SerialPort *serial_port) {
 }
 
 
+void SerialOutputBytes(char *pt, int size, SerialPort *serial_port) {
+  while(size > 0) {
+    SerialOutputChar(*pt, serial_port);
+    pt++;
+    size--;
+  }            
+}
+
+
 
