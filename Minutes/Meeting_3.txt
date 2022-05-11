@@ -10,6 +10,7 @@ To do today: Consolidate project idea, present to Andre, and allocate modules to
 
 Previous Actions::
 - Serialisation mostly finished
+- Basic integration but not accurate time results
 
 
 Regular Items
@@ -17,22 +18,28 @@ Regular Items
 - Assigning and completing modules
 - Modules:
 	- Converting accelerometer to distance (Lem)
-	- Gyroscope orientation (servo moving and person rotating) (Henry
+	- Gyroscope orientation (servo moving and person rotating) ()
 	- Mapping (Will, Lem)
 	- Serialisation of data (will)
-	- Sound (Assign later)
-	- LCD (Assign later)
-	- Magentometer (maybe)
+	- Sound ()
+	- LCD (Duncan)
+	- Magentometer ()
 
 
 New Items
 - Serialisation fixed with Andre's help
+- Looking to send every 10th value to the python program with most calculations being done on the board, to get more accurate time results
+- Stacks of magnet, can saturate magnetometer in x or y axis and. Make every second magnet make vertical and every other magnet horizontal.
+- Duncan will bring in magnets for testing 
 
-- Goals for next lab 
+- Goals for next meetings
+	- Relative orientation and magnetometer, test it out on Thursday 
 	
 
 Any Other Business
 
 
 Next Meetings
-- 18/05/2022 (Lab 11 Wednesday)
+- 18/05/2022 (Lab 12 Wednesday)
+- 12/05/2022 (Thursday Week 11) - Whenever people can (Duncan, Will, Daniel)
+- 13/05/2022 (Friday Week 11) - Whenever people can (Will, Lem)
