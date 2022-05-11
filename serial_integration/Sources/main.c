@@ -16,6 +16,10 @@
 
 #include "gyro.h"
 
+char text_buffer[32];
+int rot_x = 0;
+int rot_y = 10;
+int rot_z = 100;
 
 void printErrorCode(IIC_ERRORS error_code) {
   char buffer[128];  
@@ -85,12 +89,14 @@ void main(void) {
   #endif
   
   // initialise the simple serial
-  SerialInitialise(BAUD_9600, &SCI1);
+  //SerialInitialise(BAUD_9600, &SCI1);    // AAAAAGH
+  SerialInitialise(BAUD_115200, &SCI1);
   
   #ifndef SIMULATION_TESTING
   
   // initialise the sensor suite
   error_code = iicSensorInit();
+  
   
   // write the result of the sensor initialisation to the serial
   if (error_code == NO_ERROR) {
@@ -100,6 +106,7 @@ void main(void) {
     sprintf(buffer, "ERROR %d\r\n");
     SerialOutputString(buffer, &SCI1);
   }
+  
 
   laserInit();
   
@@ -112,7 +119,40 @@ void main(void) {
 	EnableInterrupts;
   //COPCTL = 7;
   
-  main_serialise(void);
+  //main_serialise(void);
+  /*
+  char text_buffer[32];
+  int rot_x = 0;
+  int rot_y = 10;
+  int rot_z = 100;
+  */
+  
+  _DISABLE_COP();
+
+  
+  // initialise the serial
+  //SerialInitialise(BAUD_115200, &SCI1); // Dunno if this should be SCI0 or SCI1
+  
+  // initialise the timer
+  TSCR1_TEN = 1;  
+  TSCR2_PR = 0b111;
+  
+  sprintf(text_buffer, "first 12345");
+  SendTextMsg(text_buffer);
+  SendTextMsg(text_buffer);
+  SendTextMsg(text_buffer);
+  
+  sprintf(text_buffer, "second 123456");
+  SendTextMsg(text_buffer);
+  SendTextMsg(text_buffer);
+  SendTextMsg(text_buffer);
+  
+	EnableInterrupts;
+
+  SendButtonsMsg();
+  SendButtonsMsg();
+  SendButtonsMsg();
+  
   _DISABLE_COP();
     
   for(;;) {
@@ -146,7 +186,7 @@ void main(void) {
     // inject some values for simulation
     read_gyro.x = 123; read_gyro.y = 313; read_gyro.z = 1002;
     read_accel.x = 124; read_accel.y = 312; read_accel.z = 2002;
-    read_magnet.x = 125; read_magnet.y = 311; read_magnet.z = 3002;
+    //read_magnet.x = 125; read_magnet.y = 311; read_magnet.z = 3002;
     
     #endif
 

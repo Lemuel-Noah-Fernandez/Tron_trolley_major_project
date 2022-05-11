@@ -26,5 +26,5 @@ void SendButtonsMsg();
 
 void SendTextMsg(char* text_message);
 
-void main_serialise(void);
+//void main_serialise(void);
 

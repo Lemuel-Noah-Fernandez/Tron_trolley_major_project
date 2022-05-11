@@ -41,10 +41,11 @@ void SendTextMsg(char* text_message) {
   text_header.msg_size = strlen(text_message);
   text_header.header_time = TCNT;
   
-  SerialOutputBytes((char*)&text_header, sizeof(struct MSG_HEADER), &SCI1);  
+  SerialOutputBytes((char*)&text_header, sizeof(struct MSG_HEADER), &SCI1);  // These were changed from SCI1
   SerialOutputBytes(text_message, text_header.msg_size, &SCI1);
 }
 
+/*
 void main_serialise(void) {
   char text_buffer[32];
   int rot_x = 0;
@@ -55,7 +56,7 @@ void main_serialise(void) {
 
   
   // initialise the serial
-  SerialInitialise(BAUD_115200, &SCI1);
+  SerialInitialise(BAUD_115200, &SCI0); // Dunno if this should be SCI0 or SCI1
   
   // initialise the timer
   TSCR1_TEN = 1;  
@@ -80,3 +81,4 @@ void main_serialise(void) {
   _DISABLE_COP();
    
 }
+*/
