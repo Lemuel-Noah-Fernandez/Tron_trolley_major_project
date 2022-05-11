@@ -1,0 +1,38 @@
+Meeting 3:
+Date: 11/05/2022
+
+Present: Lem, Will, Duncan
+Missing: Henry, Daniel
+
+To do today: Consolidate project idea, present to Andre, and allocate modules to individual people
+- Get readings for accelerometer and magnetometer
+- Integration 
+
+Previous Actions::
+- Serialisation mostly finished
+
+
+Regular Items
+- Everyone is online except for Will due to strikes
+- Assigning and completing modules
+- Modules:
+	- Converting accelerometer to distance (Lem)
+	- Gyroscope orientation (servo moving and person rotating) (Henry
+	- Mapping (Will, Lem)
+	- Serialisation of data (will)
+	- Sound (Assign later)
+	- LCD (Assign later)
+	- Magentometer (maybe)
+
+
+New Items
+- Serialisation fixed with Andre's help
+
+- Goals for next lab 
+	
+
+Any Other Business
+
+
+Next Meetings
+- 18/05/2022 (Lab 11 Wednesday)
