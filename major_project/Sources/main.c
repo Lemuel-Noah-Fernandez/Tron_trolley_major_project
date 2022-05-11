@@ -56,6 +56,18 @@ void printErrorCode(IIC_ERRORS error_code) {
 }
 
 void main(void) {
+  
+  volatile unsigned int previous_time;
+  volatile unsigned int current_time;
+  volatile unsigned int time_diff;
+  volatile float float_time_diff;
+  volatile float distance = 0;
+  volatile float velocity = 0;
+  volatile float acceleration = 0;
+  int count = 0;
+  volatile float running_average_value = 0;
+  volatile float running_average_total = 0;
+  
 
   AccelRaw read_accel;
   AccelScaled scaled_accel;
@@ -65,9 +77,10 @@ void main(void) {
   
   IIC_ERRORS error_code = NO_ERROR;
   
-  char buffer[128];  
+  char buffer[200];  
   
   unsigned long singleSample;
+  
   
   //assert(error_code != NO_ERROR);
 
@@ -114,6 +127,8 @@ void main(void) {
     
   for(;;) {
   
+    current_time = TCNT;
+  
     #ifndef SIMULATION_TESTING
   
     // read the raw values
@@ -149,11 +164,62 @@ void main(void) {
     // convert the acceleration to a scaled value
     convertUnits(&read_accel, &scaled_accel);    
     
-    // format the string of the sensor data to go the the serial    
-    sprintf(buffer, "%lu, %d, %d, %d, %.2f, %.2f, %.2f\r\n", singleSample, read_gyro.x, read_gyro.y, read_gyro.z, scaled_accel.x, scaled_accel.y, scaled_accel.z);
+ 
     
+    time_diff = current_time - previous_time;
+    float_time_diff = (float)time_diff/(24000000.0);
+
+    
+    if(time_diff > 0){
+      //print out the time
+      //sprintf(buffer, "time: %f current_time: %lu previous_time: %lu\n", float_time_diff, current_time, previous_time);
+      //SerialOutputString(buffer, &SCI1); 
+    }else{
+    
+      //if(current_time < 0){
+      //  current_time = 65535 - current_time; 
+      time_diff = 65535 - previous_time + current_time;
+      //sprintf(buffer, "time: %f current_time: %lu previous_time: %lu\n", float_time_diff, current_time, previous_time);
+      //SerialOutputString(buffer, &SCI1); 
+      
+    }
+    
+    
+     
+    // format the string of the sensor data to go the the serial    
+    //sprintf(buffer,"%lu, %d, %d, %d, %.2f, %.2f, %.2f\r\n",singleSample, read_gyro.x, read_gyro.y, read_gyro.z, scaled_accel.x, scaled_accel.y, scaled_accel.z);
+   
     // output the data to serial
+    //SerialOutputString(buffer, &SCI1);
+    
+    //sprintf(buffer, "%f - y acceleration\n", scaled_accel.y);
+    //SerialOutputString(buffer, &SCI1);
+    
+    
+    
+    
+    if(count%100 == 0){
+    sprintf(buffer, "time: %f, accel: %.2f velocity: %f, displacement: %f\n",float_time_diff, 9.8*scaled_accel.y, velocity, distance);
     SerialOutputString(buffer, &SCI1);
+    }
+    
+    //some filtering
+    if(count < 200){
+      running_average_value = running_average_value + scaled_accel.y;
+      running_average_total = running_average_value/count;
+    } else{
+      
+      //perform integration
+      velocity = (float)velocity + (float)9.8*(float)float_time_diff*(float)(scaled_accel.y - running_average_total);
+      distance = distance + float_time_diff*velocity;
+    }
+
+
+    
+
+    
+    previous_time = current_time;
+    count++;
     
     
     //_FEED_COP(); /* feeds the dog */

@@ -2,6 +2,7 @@
 #include "derivative.h"
 #include <math.h> 
 #include "servo.h"
+#include "simple_serial.h"
 
 
 #define ZERO_ELEVATION_DUTY 4600
@@ -54,10 +55,12 @@ int toggle = 0;
 
 // the interrupt for timer 6 which is used for cycling the servo
 #pragma CODE_SEG __NEAR_SEG NON_BANKED /* Interrupt section for this module. Placement will be in NON_BANKED area. */
-__interrupt void TC6_ISR(void) { 
+__interrupt void TC6_ISR(void) {
+
    
   TC6 = TCNT + 64000;   // interrupt delay depends on the prescaler
   TFLG1 |= TFLG1_C6F_MASK;
+  
 
   if (toggle == 0)
     iterator_counter++;
@@ -70,6 +73,6 @@ __interrupt void TC6_ISR(void) {
     toggle = 0;
   }
   
-  setServoPose(50 + iterator_counter, 50 + iterator_counter);    
+  //setServoPose(50 + iterator_counter, 50 + iterator_counter);    
 }
 

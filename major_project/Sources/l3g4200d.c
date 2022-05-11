@@ -15,11 +15,13 @@
 
 #include "l3g4200d.h"
 
-
+#include <stdio.h>
 #include <hidef.h>      /* common defines and macros */
 #include "derivative.h"      /* derivative-specific definitions */
 
 #include "l3g4200d_definitions.h"
+#include "simple_serial.h"
+
 
 
 // structure containing the config parameters for the accelerometer
@@ -75,6 +77,14 @@ IIC_ERRORS getRawDataMagnet(MagRaw *raw_data)
 // Get the raw acceleration data from the sensor
 IIC_ERRORS getRawDataAccel(AccelRaw *raw_data)
 {
+  /*
+  char* buffer[20];
+  int time = TCNT;  
+  sprintf(buffer, "time is %d\n", time);
+  SerialOutputString(buffer, &SCI1);
+  */
+  
+  
   IIC_ERRORS error = NO_ERROR;
   error = iic_request_data(accel_wr, ADXL345_DATAX0);
     
