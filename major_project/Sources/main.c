@@ -55,18 +55,57 @@ void printErrorCode(IIC_ERRORS error_code) {
   SerialOutputString(buffer, &SCI1);
 }
 
+
+struct MSG_HEADER{
+  int sentinel;
+  char msg_type[8];
+  unsigned int msg_size;
+  unsigned int header_time;
+  int end_sentinel;
+};
+
+struct MSG_GYRO{
+  int sentinel;
+  int rotation_x;
+  int rotation_y;
+  int rotation_z;
+  unsigned int last_sample_time;
+};
+
+struct MSG_BUTTONS{
+  int sentinel;
+  unsigned char button_states;
+  unsigned int last_press_time;
+};
+
+void SendGyroMsg(int rot_x, int rot_y, int rot_z) {
+  struct MSG_HEADER gyro_header = {0xABCD, "gyro", 0, 0, 0xDCBA};
+  struct MSG_GYRO gyro_message = {0x9876, 0, 0, 0, 0};
+                             
+  gyro_header.msg_size = sizeof(struct MSG_GYRO);
+  gyro_header.header_time = TCNT;
+  
+  gyro_message.last_sample_time = TCNT;
+  gyro_message.rotation_x = rot_x;
+  gyro_message.rotation_y = rot_y;
+  gyro_message.rotation_z = rot_z;
+  
+  SerialOutputBytes((char*)&gyro_header, sizeof(struct MSG_HEADER), &SCI1);  
+  SerialOutputBytes((char*)&gyro_message, sizeof(struct MSG_GYRO), &SCI1);  
+}
+
+
 void main(void) {
   
   volatile unsigned int previous_time;
   volatile unsigned int current_time;
   volatile unsigned int time_diff;
   volatile float float_time_diff;
-  volatile float distance = 0;
-  volatile float velocity = 0;
-  volatile float acceleration = 0;
+  volatile float angle = 0;
+  volatile float scaled_angle = 0;
+  volatile int omega;
   int count = 0;
-  volatile float running_average_value = 0;
-  volatile float running_average_total = 0;
+
   
 
   AccelRaw read_accel;
@@ -92,12 +131,12 @@ void main(void) {
 
   // initialise PWM
   PWMinitialise();
-  setServoPose(100, 100);
+  setServoPose(2, 0);
 
   #endif
   
   // initialise the simple serial
-  SerialInitialise(BAUD_9600, &SCI1);
+  SerialInitialise(BAUD_115200, &SCI1);
   
   #ifndef SIMULATION_TESTING
   
@@ -184,24 +223,47 @@ void main(void) {
       
     }
     
+    if(read_gyro.x < -10000) {
+      omega = 0;
+    } else{
+      omega = read_gyro.x - 23;
+    }
     
+    if(read_gyro.x > 10000) {
+      omega = 0;
+    }else{
+      omega = read_gyro.x - 23;
+    }
+    
+    //scale the angular velocity
+    omega = omega/14;
+    angle = angle + float_time_diff* (float)omega;
+    scaled_angle = angle/13.88888;
+    
+    
+    if(count%100 == 0){
+      
+    sprintf(buffer,"w is %d, angle is %f\n", omega, angle);
+    SerialOutputString(buffer, &SCI1);
+    }
      
-    // format the string of the sensor data to go the the serial    
-    //sprintf(buffer,"%lu, %d, %d, %d, %.2f, %.2f, %.2f\r\n",singleSample, read_gyro.x, read_gyro.y, read_gyro.z, scaled_accel.x, scaled_accel.y, scaled_accel.z);
+    //format the string of the sensor data to go the the serial    
+    //sprintf(buffer,"%f, %d\r\n",float_time_diff, read_gyro.x);
    
     // output the data to serial
     //SerialOutputString(buffer, &SCI1);
     
-    //sprintf(buffer, "%f - y acceleration\n", scaled_accel.y);
-    //SerialOutputString(buffer, &SCI1);
+    //SendGyroMsg(read_gyro.x, read_gyro.y, read_gyro.z);
     
     
     
-    
+    /*
     if(count%100 == 0){
     sprintf(buffer, "time: %f, accel: %.2f velocity: %f, displacement: %f\n",float_time_diff, 9.8*scaled_accel.y, velocity, distance);
     SerialOutputString(buffer, &SCI1);
     }
+    
+    
     
     //some filtering
     if(count < 200){
@@ -210,13 +272,11 @@ void main(void) {
     } else{
       
       //perform integration
-      velocity = (float)velocity + (float)9.8*(float)float_time_diff*(float)(scaled_accel.y - running_average_total);
+      velocity = (float)velocity + (float)(float)float_time_diff*(float)(9.8*scaled_accel.y + 0.06);
       distance = distance + float_time_diff*velocity;
     }
 
-
-    
-
+   */
     
     previous_time = current_time;
     count++;

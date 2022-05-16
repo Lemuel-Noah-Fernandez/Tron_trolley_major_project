@@ -28,9 +28,10 @@ void PWMinitialise(void){
     PWME  |= 0xFF;      // enable PWM0
 }
 
-void setServoPose(int azimuth, int elevation){  
+void setServoPose(int angle, int elevation){  
+
     PWMDTY45 = (int)(ZERO_ELEVATION_DUTY + elevation);  // Sets elevation to duty cycle using PWM 45
-    PWMDTY67 = (int)(ZERO_AZIMUTH_DUTY + azimuth);   // Sets azimuth to duty cycle using PWM 67
+    PWMDTY67 = (int)(ZERO_AZIMUTH_DUTY + 30*angle);   // Sets azimuth to duty cycle using PWM 67
 }
 
 
@@ -57,22 +58,23 @@ int toggle = 0;
 #pragma CODE_SEG __NEAR_SEG NON_BANKED /* Interrupt section for this module. Placement will be in NON_BANKED area. */
 __interrupt void TC6_ISR(void) {
 
-   
+  int angle_to_reach = 90;
+  int angle_input = 4*angle_to_reach;
   TC6 = TCNT + 64000;   // interrupt delay depends on the prescaler
   TFLG1 |= TFLG1_C6F_MASK;
   
-
+  
   if (toggle == 0)
     iterator_counter++;
   else
     iterator_counter--;
   
-  if (iterator_counter > 500) {
+  if (iterator_counter > angle_input) {
     toggle = 1;
   } else if (iterator_counter < 0) {
     toggle = 0;
   }
   
-  //setServoPose(50 + iterator_counter, 50 + iterator_counter);    
+  setServoPose(2 + iterator_counter, 0);    
 }
 

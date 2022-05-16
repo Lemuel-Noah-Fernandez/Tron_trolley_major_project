@@ -43,6 +43,10 @@ void SerialOutputChar(char, SerialPort *serial_port);
 // SerialOutputString - output a NULL TERMINATED string to the serial port
 // Input: pointer to a NULL-TERMINATED string (if not null terminated, there will be problems)
 void SerialOutputString(char *pt, SerialPort *serial_port); 
+
+// SerialOutputString - output a set of bytes to the serial port
+// Input: pointer to a char sized buffer, the size must be correct
+void SerialOutputBytes(char *pt, int size, SerialPort *serial_port); 
  
  
 #endif
