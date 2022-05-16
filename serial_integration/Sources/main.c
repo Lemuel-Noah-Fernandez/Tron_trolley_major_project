@@ -62,6 +62,14 @@ void printErrorCode(IIC_ERRORS error_code) {
 
 void main(void) {
 
+  volatile unsigned int previous_time;
+  volatile unsigned int current_time;
+  volatile unsigned int time_diff;
+  volatile float float_time_diff;
+  volatile float distance = 0;
+  volatile float velocity = 0;
+  int count = 0;
+
   AccelRaw read_accel;
   AccelScaled scaled_accel;
 
@@ -156,6 +164,8 @@ void main(void) {
   _DISABLE_COP();
     
   for(;;) {
+    current_time = TCNT;
+    
     SendGyroMsg(rot_x, rot_y, rot_z);
   
     #ifndef SIMULATION_TESTING
@@ -191,13 +201,32 @@ void main(void) {
     #endif
 
     // convert the acceleration to a scaled value
-    convertUnits(&read_accel, &scaled_accel);    
+    convertUnits(&read_accel, &scaled_accel); 
+    
+    time_diff = current_time - previous_time;
+    float_time_diff = (float)time_diff/(24000000.0);
+    
+    time_diff = 65535 - previous_time + current_time;   
     
     // format the string of the sensor data to go the the serial    
     sprintf(buffer, "%lu, %d, %d, %d, %.2f, %.2f, %.2f\r\n", singleSample, read_gyro.x, read_gyro.y, read_gyro.z, scaled_accel.x, scaled_accel.y, scaled_accel.z);
     
     // output the data to serial
+    //SerialOutputString(buffer, &SCI1);
+    
+    if(count%100 == 0){
+    sprintf(buffer, "time: %f, accel: %.2f velocity: %f, displacement: %f\n",float_time_diff, 9.8*scaled_accel.y, velocity, distance);
     SerialOutputString(buffer, &SCI1);
+    }
+    
+    //perform integration
+    velocity = (float)velocity + (float)9.8*(float)float_time_diff*(float)scaled_accel.y;
+    distance = distance + float_time_diff*velocity;
+    
+
+    
+    previous_time = current_time;
+    count++;
     
     
     //_FEED_COP(); /* feeds the dog */

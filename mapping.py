@@ -5,6 +5,7 @@ import pygame
 
 # import our defined classes
 from location_class import Location
+import serialisation
 
 # initialise the 'game'
 pygame.init()
@@ -76,6 +77,9 @@ def draw_aisles():
 # replace this with data from microcontroller when ready    
 exit_game = False
 while exit_game == False:
+    why = serialisation.hi
+    #print(serialisation.hi)
+    print("loool {}".format(serialisation.gyro_values[0]))
     events = pygame.event.get()
     exit_game = controls(events, trolley)
     draw_map()

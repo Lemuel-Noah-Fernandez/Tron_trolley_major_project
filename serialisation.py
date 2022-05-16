@@ -6,8 +6,10 @@ import struct
 import traceback
 
 MSG_HEADER_SIZE = 16
+hi = 5
+gyro_values = [10]
 
-def read_packet(f):
+def read_packet(f, gyro_values):
     header_bytes = f.read(MSG_HEADER_SIZE)
 
     if len(header_bytes) < MSG_HEADER_SIZE:
@@ -28,10 +30,18 @@ def read_packet(f):
         gyro_bytes = f.read(header_data[2])
         gyro_data = struct.unpack(">hhhhH", gyro_bytes)
         print("gyro message: " + str(gyro_data[1]) + ", " + str(gyro_data[2]) + ", " + str(gyro_data[3]) + ", time=" + str(gyro_data[4]))
+        #print("\n")
+        #gyro_values[0] = 2
+        
+        gyro_values.append(gyro_data[1])
+        gyro_values.append(gyro_data[2])
+        gyro_values.append(gyro_data[3])
+        
+    """
     elif message_type == b"buttons":
         buttons_bytes = f.read(header_data[2])
         print("buttons message: " + str(hex(buttons_bytes[1])) + ", time=" + str(buttons_bytes[2]))
-
+    """
     return True
 
 
@@ -48,7 +58,7 @@ def read_file(file_name):
                 # Logs the error appropriately. 
     
 
-def read_serial(com_port):
+def read_serial(com_port, gyro_values):
     serialPort = serial.Serial(port=com_port, baudrate=115200, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
     serialString = ""  # Used to hold data coming over UART
 
@@ -58,7 +68,7 @@ def read_serial(com_port):
         if serialPort.in_waiting > 0:
 
             try:
-                if not read_packet(serialPort):
+                if not read_packet(serialPort, gyro_values):
                     break
             except Exception as e:
                 # Logs the error appropriately. 
@@ -72,5 +82,8 @@ def read_serial(com_port):
 
 # main program entry point
 if __name__ == '__main__':
+    #hi = 5
+    #gyro_values = [10]
     #read_file('C:/Users/Stewart Worrall/Documents/data/test.hex')
-    read_serial("COM10")
+    read_serial("COM10", gyro_values)
+    print(len(gyro_values))
