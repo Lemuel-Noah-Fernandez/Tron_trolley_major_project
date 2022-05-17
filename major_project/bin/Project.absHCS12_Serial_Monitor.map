@@ -41,7 +41,7 @@ _startupData is allocated at 0xC018 and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
   _Range   pZeroOut       0x2000     51
-  _Copy    *toCopyDownBeg 0xC7B3
+  _Copy    *toCopyDownBeg 0xC7A6
 } _startupData;
 
 *********************************************************************************************
@@ -52,8 +52,8 @@ Section Name                    Size  Type     From       To       Segment
 .startData                        10     R     0xC018     0xC021   ROM_C000
 .rodata                          212     R     0xC022     0xC0F5   ROM_C000
 .rodata1                         229     R     0xC0F6     0xC1DA   ROM_C000
-NON_BANKED                      1496     R     0xC1DB     0xC7B2   ROM_C000
-.copy                             26     R     0xC7B3     0xC7CC   ROM_C000
+NON_BANKED                      1483     R     0xC1DB     0xC7A5   ROM_C000
+.copy                             26     R     0xC7A6     0xC7BF   ROM_C000
 .text                           4102     R   0x308000   0x309005   PAGE_30
 .stack                          4096   R/W     0x1000     0x1FFF   RAM
 .data                             20   R/W     0x2000     0x2013   RAM
@@ -403,7 +403,7 @@ NON_BANKED                      1496     R     0xC1DB     0xC7B2   ROM_C000
 .vectSeg342_vect                   2     R     0xFFFE     0xFFFF   .vectSeg342
 
 Summary of section sizes per section type:
-READ_ONLY (R):        1853 (dec:     6227)
+READ_ONLY (R):        1846 (dec:     6214)
 READ_WRITE (R/W):     1033 (dec:     4147)
 NO_INIT (N/I):         190 (dec:      400)
 
@@ -926,17 +926,17 @@ MODULE:                 -- accelerometer.c.o --
 MODULE:                 -- servo.c.o --
 - PROCEDURES:
      PWMinitialise                           308F9B      27      39       2   .text       
-     setServoPose                            308FC2      11      17       4   .text       
+     setServoPose                            308FC2      11      17       2   .text       
      Init_TC6                                308FD3      13      19       2   .text       
-     TC6_ISR                                   C715      57      87       1   NON_BANKED  
+     TC6_ISR                                   C715      4A      74       1   NON_BANKED  
 - VARIABLES:
-     iterator_counter                          2021       4       4       6   .bss        
+     iterator_counter                          2021       4       4       5   .bss        
      toggle                                    2025       2       2       2   .bss        
 MODULE:                 -- laser.c.o --
 - PROCEDURES:
      laserInit                               308FE6      13      19       2   .text       
      GetLatestLaserSample                    308FF9       D      13       2   .text       
-     TC1_ISR                                   C76C      47      71       1   NON_BANKED  
+     TC1_ISR                                   C75F      47      71       1   NON_BANKED  
 - VARIABLES:
      riseEdge                                  2027       4       4       7   .bss        
      fallEdge                                  202B       4       4       6   .bss        
@@ -964,7 +964,7 @@ MODULE STATISTIC
   iic.c.o                                      6    545      0
   simple_serial.c.o                           12    108      0
   accelerometer.c.o                            0     94      0
-  servo.c.o                                    6    162      0
+  servo.c.o                                    6    149      0
   laser.c.o                                   12    103      0
   other                                     4096     12     26
 
@@ -2040,7 +2040,7 @@ OBJECT LIST SORTED BY ADDRESS
      currentTime                               201C       2       2       5   .bss        
      alarmTime                                 201E       2       2       2   .bss        
      alarmSet                                  2020       1       1       3   .bss        
-     iterator_counter                          2021       4       4       6   .bss        
+     iterator_counter                          2021       4       4       5   .bss        
      toggle                                    2025       2       2       2   .bss        
      riseEdge                                  2027       4       4       7   .bss        
      fallEdge                                  202B       4       4       6   .bss        
@@ -2109,8 +2109,8 @@ OBJECT LIST SORTED BY ADDRESS
      UnimplementedISR                          C6DE       A      10      59   NON_BANKED  
      SoftwareInterrupt                         C6E8       6       6       1   NON_BANKED  
      TC7_ISR                                   C6EE      27      39       1   NON_BANKED  
-     TC6_ISR                                   C715      57      87       1   NON_BANKED  
-     TC1_ISR                                   C76C      47      71       1   NON_BANKED  
+     TC6_ISR                                   C715      4A      74       1   NON_BANKED  
+     TC1_ISR                                   C75F      47      71       1   NON_BANKED  
      _vect                                     FF80      7E     126       0   .abs_section_ff80
      printErrorCode                          308000      4B      75       4   .text       
      main                                    30804B     18A     394       5   .text       
@@ -2147,7 +2147,7 @@ OBJECT LIST SORTED BY ADDRESS
      SerialOutputString                      308F24      19      25       6   .text       
      convertUnits                            308F3D      5E      94       2   .text       
      PWMinitialise                           308F9B      27      39       2   .text       
-     setServoPose                            308FC2      11      17       4   .text       
+     setServoPose                            308FC2      11      17       2   .text       
      Init_TC6                                308FD3      13      19       2   .text       
      laserInit                               308FE6      13      19       2   .text       
      GetLatestLaserSample                    308FF9       D      13       2   .text       
@@ -2188,25 +2188,25 @@ simple_serial.c.o:
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xC7B3 ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC7A6 ---- SIZE       4 ---
 Filling bytes inserted
  00142000
-------- ROM-ADDRESS: 0xC7B7 ---- RAM-ADDRESS: 0x2000 ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC7AA ---- RAM-ADDRESS: 0x2000 ---- SIZE       4 ---
 Name of initialized Object : accelerometer_cfg
  2D083108
-------- ROM-ADDRESS: 0xC7BB ---- RAM-ADDRESS: 0x2004 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC7AE ---- RAM-ADDRESS: 0x2004 ---- SIZE       2 ---
 Name of initialized Object : gyro_cfg
  200F
-------- ROM-ADDRESS: 0xC7BD ---- RAM-ADDRESS: 0x2006 ---- SIZE       1 ---
+------- ROM-ADDRESS: 0xC7B0 ---- RAM-ADDRESS: 0x2006 ---- SIZE       1 ---
 Name of initialized Object : mag_cfg
  02
-------- ROM-ADDRESS: 0xC7BE ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC7B1 ---- SIZE       2 ---
 Filling bytes inserted
  0000
-------- ROM-ADDRESS: 0xC7C0 ---- RAM-ADDRESS: 0x2009 ---- SIZE      11 ---
+------- ROM-ADDRESS: 0xC7B3 ---- RAM-ADDRESS: 0x2009 ---- SIZE      11 ---
 Name of initialized Object : SCI1:1
  D000D100D2 00D300D700 D4
-------- ROM-ADDRESS: 0xC7CB ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC7BE ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -2238,7 +2238,7 @@ SoftwareInterrupt         USES _TCNT
 TC7_ISR                   USES _TCNT _TC7 _TFLG1 currentTime alarmSet 
                                 alarmTime alarmSignaled 
 TC6_ISR                   USES _TCNT _TC6 _TFLG1 toggle _LINC _LDEC 
-                                iterator_counter _ILSEXT _LCMP setServoPose 
+                                iterator_counter _ILSEXT _LCMP 
 TC1_ISR                   USES _PTT _TC1 riseEdge fallEdge lastLaserSample 
                                 _TFLG1 
 _vect                     USES UnimplementedISR TC7_ISR TC6_ISR TC1_ISR 
@@ -2572,9 +2572,7 @@ DEPENDENCY TREE
  |  +- _ILSEXT              (see above)
  |  |  
  |  +- _LCMP               
- |  |    
- |  +- setServoPose         (see above)
- |     
+ |       
  +- TC1_ISR             
  |    
  +- SoftwareInterrupt   
@@ -2585,6 +2583,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 6
-Total size of all blocks to be downloaded: 6227
+Number of blocks to be downloaded: 7
+Total size of all blocks to be downloaded: 6214
 

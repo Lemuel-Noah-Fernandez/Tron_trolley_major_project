@@ -75,6 +75,6 @@ __interrupt void TC6_ISR(void) {
     toggle = 0;
   }
   
-  setServoPose(2 + iterator_counter, 0);    
+  //setServoPose(2 + iterator_counter, 0);    
 }
 
