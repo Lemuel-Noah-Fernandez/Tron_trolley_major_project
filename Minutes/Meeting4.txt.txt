@@ -1,0 +1,31 @@
+Meeting 4:
+Date: 17/05/2022
+
+Present: Lem, Will, Duncan, Daniel
+Missing: Henry
+
+To do today: Get the functionality of the board working on someone's laptop. Seek other solution if not
+
+Previous Actions::
+
+
+Regular Items
+- Board did not work on Duncan's laptop after testing on Daniels
+- Looking to work on magnetometer 
+- Magnets are brought in to assist with Magnetometer
+
+New Items
+- Going to tron lab to ask for Khit's help on the board
+- Progress report mostly done by Will
+
+
+- Goals for next meetings
+	- Finish progress report for presentation for tommorrow
+	
+
+Any Other Business
+- Everyone is super busy next week, Duncan in Bathurst, Will got 7 assessments, Lem got 5 asessments
+
+
+Next Meetings
+- 18/05/2022 (Lab 12 Wednesday)
