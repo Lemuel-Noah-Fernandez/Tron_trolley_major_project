@@ -103,6 +103,7 @@ def draw_aisles():
 # replace this with data from microcontroller when ready    
 exit_game = False
 while exit_game == False:
+    serialisation.read_serial(serialisation.gyro_values, serialisation.serialPort)
     why = serialisation.hi
     #print(serialisation.hi)
     #print("loool {}".format(serialisation.gyro_values[0]))
