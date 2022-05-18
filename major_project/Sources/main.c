@@ -4,6 +4,7 @@
 
 // need this for string functions
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "pll.h"
 #include "simple_serial.h"
@@ -30,7 +31,6 @@ int j = 0;
 
 //new command
 int new_command = 0;
-
 
 
 void printErrorCode(IIC_ERRORS error_code) {
@@ -120,14 +120,17 @@ void delay_ms(unsigned int time){
 }
 
 
-void change_servo_angle(int angle){
-  int current_count = 0;
+void change_servo_angle(int angle, int old_angle){
   
-  while(current_count < angle*4){
-    setServoPose(2 + current_count, 0);
-    current_count++;
-    delay_ms(1);
+  int previous_angle = old_angle;
+  
+
+  while(previous_angle < angle*4){
+    setServoPose(2 + previous_angle, 0);
+    previous_angle++;
+    delay_ms(3);
   }
+  
  
 }
 
@@ -142,6 +145,8 @@ void main(void) {
   volatile int omega;
   int count = 0;
   int finish_flag = 0;
+  int desired_angle = 0;
+  int previous_angle = 0;
 
   
 
@@ -226,7 +231,7 @@ void main(void) {
     
     //error_code = getRawDataMagnet(&read_magnet);
     
-    GetLatestLaserSample(&singleSample);
+    //GetLatestLaserSample(&singleSample);
         
     #else
     
@@ -278,7 +283,7 @@ void main(void) {
     scaled_angle = angle/13.88888;
     
     
-    if(count%100 == 0){
+    if(count%1000 == 0){
       
     sprintf(buffer,"w is %d, angle is %f\n", omega, angle);
     SerialOutputString(buffer, &SCI1);
@@ -316,6 +321,16 @@ void main(void) {
       finish_flag = 2; 
     }
     */
+    
+    
+    if(new_command == 1){
+    
+    previous_angle = desired_angle;
+    desired_angle = atoi(command);
+    change_servo_angle(desired_angle, previous_angle);
+    new_command = 0;
+    
+    }
     
     previous_time = current_time;
     count++;
@@ -382,7 +397,7 @@ __interrupt void Serial_ReadISR(void){
           while(!(SCI1SR1 & 0x80));
           
           // Write to serial
-          SCI1DRL = error_sentence[i];
+         SCI1DRL = error_sentence[i];
           
         }
       

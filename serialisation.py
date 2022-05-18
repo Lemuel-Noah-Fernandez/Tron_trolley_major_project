@@ -8,6 +8,9 @@ import traceback
 MSG_HEADER_SIZE = 16
 hi = 5
 gyro_values = [10]
+com_port = "COM10"
+serialPort = serial.Serial(port=com_port, baudrate=115200, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
+# serialString = ""  # Used to hold data coming over UART
 
 def read_packet(f, gyro_values):
     header_bytes = f.read(MSG_HEADER_SIZE)
@@ -58,25 +61,20 @@ def read_file(file_name):
                 # Logs the error appropriately. 
     
 
-def read_serial(com_port, gyro_values):
-    serialPort = serial.Serial(port=com_port, baudrate=115200, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
-    serialString = ""  # Used to hold data coming over UART
+def read_serial(gyro_values, serialPort):
+    # Wait until there is data waiting in the serial buffer
+    print("yoot")
+    if serialPort.in_waiting > 0:
 
-    while True:
-
-        # Wait until there is data waiting in the serial buffer
-        if serialPort.in_waiting > 0:
-
-            try:
-                if not read_packet(serialPort, gyro_values):
-                    break
-            except Exception as e:
-                # Logs the error appropriately. 
-                print(traceback.format_exc())
-                break
-       
-        else:
-            time.sleep(0.05)
+        try:
+            if not read_packet(serialPort, gyro_values):
+                print("yeet")
+        except Exception as e:
+            # Logs the error appropriately. 
+            print(traceback.format_exc())
+    
+    else:
+        time.sleep(0.05)
 
 
 
@@ -85,5 +83,7 @@ if __name__ == '__main__':
     #hi = 5
     #gyro_values = [10]
     #read_file('C:/Users/Stewart Worrall/Documents/data/test.hex')
-    read_serial("COM10", gyro_values)
+    while True:
+        read_serial("COM10", gyro_values)
+
     print(len(gyro_values))
