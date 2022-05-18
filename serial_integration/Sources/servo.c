@@ -40,7 +40,7 @@ void Init_TC6 (void) {
   TIOS_IOS6 = 1;   // set channel 6 to output compare
     
   TCTL1_OL6 = 1;    // Output mode for ch6
-  TIE_C6I = 1;   // enable interrupt for channel 6
+  //TIE_C6I = 1;   // enable interrupt for channel 6
 
   TFLG1 |= TFLG1_C6F_MASK;
 }

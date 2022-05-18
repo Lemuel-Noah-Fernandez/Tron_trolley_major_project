@@ -7,7 +7,7 @@
 #include <mc9s12dg256.h>
 
 // comment out the next line when using the hardware
-#define SIMULATION_TESTING
+//#define SIMULATION_TESTING
 
 #ifdef SIMULATION_TESTING
 

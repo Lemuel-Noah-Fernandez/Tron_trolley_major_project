@@ -209,13 +209,13 @@ void main(void) {
     time_diff = 65535 - previous_time + current_time;   
     
     // format the string of the sensor data to go the the serial    
-    sprintf(buffer, "%lu, %d, %d, %d, %.2f, %.2f, %.2f\r\n", singleSample, read_gyro.x, read_gyro.y, read_gyro.z, scaled_accel.x, scaled_accel.y, scaled_accel.z);
+    //sprintf(buffer, "%lu, %d, %d, %d, %.2f, %.2f, %.2f\r\n", singleSample, read_gyro.x, read_gyro.y, read_gyro.z, scaled_accel.x, scaled_accel.y, scaled_accel.z);
     
     // output the data to serial
     //SerialOutputString(buffer, &SCI1);
     
     if(count%100 == 0){
-    sprintf(buffer, "time: %f, accel: %.2f velocity: %f, displacement: %f\n",float_time_diff, 9.8*scaled_accel.y, velocity, distance);
+    //sprintf(buffer, "time: %f, accel: %.2f velocity: %f, displacement: %f\n",float_time_diff, 9.8*scaled_accel.y, velocity, distance);
     SerialOutputString(buffer, &SCI1);
     }
     
