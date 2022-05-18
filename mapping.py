@@ -2,10 +2,17 @@
 
 # import external modules
 import pygame
+import supermarket
 
 # import our defined classes
 from location_class import Location
 import serialisation
+
+# First runs search function 
+aisle_name = supermarket.main_search()
+aisle_num = int(aisle_name[6])
+print(aisle_num)
+print(type(aisle_num))
 
 # initialise the 'game'
 pygame.init()
@@ -17,8 +24,9 @@ BLUE = (60, 125, 235)
 RED = (230, 45, 45)
 
 # Open a game screen
-window_x = 750
-window_y = 750
+# Dimensions of room are roughly (750, 450), so I've multiplied those numbers by 1.7
+window_x = 1275
+window_y = 765
 window_size = (window_x, window_y)
 screen = pygame.display.set_mode(window_size)
 pygame.display.set_caption('Tron Lab Map')
@@ -27,12 +35,20 @@ pygame.display.set_caption('Tron Lab Map')
 initial_x = 375
 initial_y = 375
 
+# Product coordinates
+product_x = 350 + (200 * (aisle_num-1))
+product_y = 100  
+
+# Create the product sprite
+product = Location(BLUE, product_x, product_y)
+
 # create the trolley sprite
 trolley = Location(RED, initial_x, initial_y)
 
 # create the group that will hold all locations (e.g. item locations)
 all_locations = pygame.sprite.Group()
 all_locations.add(trolley)
+all_locations.add(product)
 
 # Control how fast the screen updates (FPS)
 clock = pygame.time.Clock()
@@ -71,7 +87,17 @@ def controls(events, player):
 # pygame.draw.line function should do it, just gotta get dimensions of some sort
 # screen size can be adjusted if needed to make this easier
 def draw_aisles():
-    dummy = 0
+    pygame.draw.rect(screen, WHITE, pygame.Rect(200, 0, 100, 200), 0)
+    pygame.draw.rect(screen, WHITE, pygame.Rect(400, 0, 100, 200), 0)
+    pygame.draw.rect(screen, WHITE, pygame.Rect(600, 0, 100, 200), 0)
+    pygame.draw.rect(screen, WHITE, pygame.Rect(800, 0, 100, 200), 0)
+    pygame.draw.rect(screen, WHITE, pygame.Rect(1000, 0, 100, 200), 0)
+    pygame.draw.rect(screen, WHITE, pygame.Rect(200, 565, 100, 200), 0)
+    pygame.draw.rect(screen, WHITE, pygame.Rect(400, 565, 100, 200), 0)
+    pygame.draw.rect(screen, WHITE, pygame.Rect(600, 565, 100, 200), 0)
+    pygame.draw.rect(screen, WHITE, pygame.Rect(800, 565, 100, 200), 0)
+    pygame.draw.rect(screen, WHITE, pygame.Rect(1000, 565, 100, 200), 0)    
+
 
 # little mini loop to control the trolley by arrow keys
 # replace this with data from microcontroller when ready    
@@ -79,7 +105,7 @@ exit_game = False
 while exit_game == False:
     why = serialisation.hi
     #print(serialisation.hi)
-    print("loool {}".format(serialisation.gyro_values[0]))
+    #print("loool {}".format(serialisation.gyro_values[0]))
     events = pygame.event.get()
     exit_game = controls(events, trolley)
     draw_map()
