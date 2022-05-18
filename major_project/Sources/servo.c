@@ -57,8 +57,9 @@ int toggle = 0;
 // the interrupt for timer 6 which is used for cycling the servo
 #pragma CODE_SEG __NEAR_SEG NON_BANKED /* Interrupt section for this module. Placement will be in NON_BANKED area. */
 __interrupt void TC6_ISR(void) {
-
-  int angle_to_reach = 90;
+  
+  
+  int angle_to_reach = 45;
   int angle_input = 4*angle_to_reach;
   TC6 = TCNT + 64000;   // interrupt delay depends on the prescaler
   TFLG1 |= TFLG1_C6F_MASK;
@@ -75,6 +76,8 @@ __interrupt void TC6_ISR(void) {
     toggle = 0;
   }
   
-  //setServoPose(2 + iterator_counter, 0);    
+  
+  
+  setServoPose(2 + iterator_counter, 0);    
 }
 

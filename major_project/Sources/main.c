@@ -16,6 +16,23 @@
 #include "gyro.h"
 
 
+#define BUFFER 200
+
+//global variables involved in interrupt sequence
+
+char sentence[BUFFER];
+
+//stores the command and allows you to enter another one   
+char command[BUFFER];   
+
+//keeps track of the length of command
+int j = 0;     
+
+//new command
+int new_command = 0;
+
+
+
 void printErrorCode(IIC_ERRORS error_code) {
   char buffer[128];  
   switch (error_code) {
@@ -95,6 +112,25 @@ void SendGyroMsg(int rot_x, int rot_y, int rot_z) {
 }
 
 
+void delay_ms(unsigned int time){
+    int i;
+    int j;
+    for(i=0;i<time;i++)
+      for(j=0;j<4000;j++);
+}
+
+
+void change_servo_angle(int angle){
+  int current_count = 0;
+  
+  while(current_count < angle*4){
+    setServoPose(2 + current_count, 0);
+    current_count++;
+    delay_ms(1);
+  }
+ 
+}
+
 void main(void) {
   
   volatile unsigned int previous_time;
@@ -105,6 +141,7 @@ void main(void) {
   volatile float scaled_angle = 0;
   volatile int omega;
   int count = 0;
+  int finish_flag = 0;
 
   
 
@@ -131,7 +168,6 @@ void main(void) {
 
   // initialise PWM
   PWMinitialise();
-  setServoPose(2, 0);
 
   #endif
   
@@ -163,6 +199,7 @@ void main(void) {
 	EnableInterrupts;
   //COPCTL = 7;
   _DISABLE_COP();
+  setServoPose(0, 0);
     
   for(;;) {
   
@@ -263,20 +300,22 @@ void main(void) {
     SerialOutputString(buffer, &SCI1);
     }
     
+     */
     
     
-    //some filtering
-    if(count < 200){
-      running_average_value = running_average_value + scaled_accel.y;
-      running_average_total = running_average_value/count;
-    } else{
-      
-      //perform integration
-      velocity = (float)velocity + (float)(float)float_time_diff*(float)(9.8*scaled_accel.y + 0.06);
-      distance = distance + float_time_diff*velocity;
+    //change_servo_angle(0);
+    
+    /*
+    if(finish_flag == 0){
+      change_servo_angle(0);
+      delay_ms(100);
+      finish_flag = 1;
+    } else if(finish_flag == 1){
+      change_servo_angle(30);
+      delay_ms(100);
+      finish_flag = 2; 
     }
-
-   */
+    */
     
     previous_time = current_time;
     count++;
@@ -287,3 +326,72 @@ void main(void) {
   
   /* please make sure that you never leave main */
 }
+
+
+#pragma CODE_SEG __NEAR_SEG NON_BANKED /* Interrupt section for this module. Placement will be in NON_BANKED area. */
+__interrupt void Serial_ReadISR(void){
+
+
+  int i = 0;
+  int k = 0;
+  
+  char* error_sentence = "You've exceeded the buffer limit. Try again!\n";
+  int length = strlen(error_sentence);
+  
+  // Check if data is received. The RDRF flag
+  if (SCI1SR1 & 0x20) 
+  {
+ 
+    
+    // End of sentence? Look for a carriage return
+    if (SCI1DRL == 0x0D) 
+    {
+      //add in null terminator to string    
+      sentence[j] = '\0';
+      
+      //copies sentence to command 
+      strcpy(command, sentence);
+      
+      //sets command to 1 to make sure program knows there is a new command that hasn't been read
+      new_command = 1;
+     
+      //output the newline to terminal
+      SerialOutputChar(0x0D, &SCI1);
+      
+      // Reset buffer
+      j = 0;
+      
+      
+    } 
+    
+    // Store each character of sentence in buffer
+    else
+    {
+      sentence[j] = SCI1DRL;
+      SerialOutputChar(sentence[j], &SCI1);
+      
+      //incrememnt length of word
+      j = j + 1;
+      
+      //buffer overflow condition
+      if(j == BUFFER) {
+      
+         for (i = 0; i < length; i++) 
+        {
+          // Wait for data to be ready
+          while(!(SCI1SR1 & 0x80));
+          
+          // Write to serial
+          SCI1DRL = error_sentence[i];
+          
+        }
+      
+       j = 0; //Reset buffer
+        
+      }
+    }
+  }
+
+
+}
+

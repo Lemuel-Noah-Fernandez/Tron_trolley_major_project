@@ -25,6 +25,7 @@ __interrupt void SoftwareInterrupt(void)
 }
 
 
+__interrupt void Serial_ReadISR(void);
 
 typedef void (*near tIsrFunc)(void);
 
@@ -72,7 +73,7 @@ const tIsrFunc _vect[] @0xFF80 = {     /* Interrupt table */
         UnimplementedISR,                 /* vector 0x18 (PORT J) */
         UnimplementedISR,                 /* vector 0x17 (ATD1) */
         UnimplementedISR,                 /* vector 0x16 (ATD0) */
-        UnimplementedISR,                 /* vector 0x15 (SCI1) */
+        Serial_ReadISR,                   /* vector 0x15 (SCI1) */
         UnimplementedISR,                 /* vector 0x14 (SCI0) */
         UnimplementedISR,                 /* vector 0x13 */
         UnimplementedISR,                 /* vector 0x12 */
