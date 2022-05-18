@@ -3,7 +3,7 @@
 import pygame
 
 BLACK = (0,0,0)
-DOT_DIAM = 10
+DOT_DIAM = 30
 DOT_RAD = DOT_DIAM / 2
 
 class Location(pygame.sprite.Sprite):
