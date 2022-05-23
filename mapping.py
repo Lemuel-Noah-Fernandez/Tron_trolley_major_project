@@ -3,13 +3,14 @@
 # import external modules
 import pygame
 import supermarket
+import math
 
 # import our defined classes
 from location_class import Location
 import serialisation
 
 # First runs search function 
-aisle_name = supermarket.main_search()
+[aisle_name, aisle_row] = supermarket.main_search()
 aisle_num = int(aisle_name[6])
 print(aisle_num)
 print(type(aisle_num))
@@ -32,12 +33,16 @@ screen = pygame.display.set_mode(window_size)
 pygame.display.set_caption('Tron Lab Map')
 
 # initial coordinates for trolley (these should be fed in from microcontroller later)
-initial_x = 375
-initial_y = 375
+initial_x = 100
+initial_y = 575
 
 # Product coordinates
-product_x = 350 + (200 * (aisle_num-1))
-product_y = 100  
+if aisle_row <= 4:
+    product_x = 300 + (200 * (aisle_num-1))
+    product_y = 25 + (75 * aisle_row)  
+else:
+    product_x = 370 + (200 * (aisle_num-1))
+    product_y = 25 + (75 * (aisle_row - 4))
 
 # Create the product sprite
 product = Location(BLUE, product_x, product_y)
@@ -61,8 +66,12 @@ def draw_map():
     pygame.display.flip()
     clock.tick(30)
 
-def controls(events, player):
+def controls(events, player, aisle):
     exit_game = False
+
+    # Updating trolley position
+    player.set_position(100 + (aisle * 250), 575)
+
     # Loop through all actions taken by user
     for event in events:
         # If user clicks close button exit game
@@ -82,37 +91,26 @@ def controls(events, player):
                 player.move_down(15)
     return exit_game
 
-# TODO
-# draw the aisles of the tron lab as white lines onto the map
-# pygame.draw.line function should do it, just gotta get dimensions of some sort
-# screen size can be adjusted if needed to make this easier
 def draw_aisles():
-    pygame.draw.rect(screen, WHITE, pygame.Rect(200, 0, 100, 200), 0)
-    pygame.draw.rect(screen, WHITE, pygame.Rect(400, 0, 100, 200), 0)
-    pygame.draw.rect(screen, WHITE, pygame.Rect(600, 0, 100, 200), 0)
-    pygame.draw.rect(screen, WHITE, pygame.Rect(800, 0, 100, 200), 0)
-    pygame.draw.rect(screen, WHITE, pygame.Rect(1000, 0, 100, 200), 0)
-    pygame.draw.rect(screen, WHITE, pygame.Rect(200, 565, 100, 200), 0)
-    pygame.draw.rect(screen, WHITE, pygame.Rect(400, 565, 100, 200), 0)
-    pygame.draw.rect(screen, WHITE, pygame.Rect(600, 565, 100, 200), 0)
-    pygame.draw.rect(screen, WHITE, pygame.Rect(800, 565, 100, 200), 0)
-    pygame.draw.rect(screen, WHITE, pygame.Rect(1000, 565, 100, 200), 0)    
-
-
-# little mini loop to control the trolley by arrow keys
-# replace this with data from microcontroller when ready    
+    for i in range(5):
+        pygame.draw.rect(screen, WHITE, pygame.Rect(((i+1)*200), 0, 100, 350), 0)  
+  
 exit_game = False
+aisle_num_serial = False
 while exit_game == False:
-    aisle_num_serial = 0
     serialisation.serialPort.write(b'5\n')
     aisle_num_serial = serialisation.read_serial(serialisation.gyro_values, serialisation.serialPort)
     if aisle_num_serial != None:
         print(aisle_num_serial)
-    
-    #print(serialisation.hi)
-    #print("loool {}".format(serialisation.gyro_values[0]))
     events = pygame.event.get()
     exit_game = controls(events, trolley)
+
+    # Calculating the gyro angle needed
+    tan_angle = ((575 - product_y)/(product_x - (100 + (aisle_num_serial * 250))))
+    if (product_x - (100 + (aisle_num_serial * 250))) >= 0:
+        angle = math.degrees(math.atan(tan_angle))
+    else:
+        angle = 180 + math.degrees(math.atan(tan_angle))
     draw_map()
     
 # Exit the game
