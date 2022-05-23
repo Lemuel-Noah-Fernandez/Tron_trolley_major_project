@@ -20,15 +20,19 @@ def read_packet(f, gyro_values):
         return False
 
     header_data = struct.unpack(">H8sHHH", header_bytes)
-    print("header sentinels: " + str(hex(header_data[0])) + ", " + str(hex(header_data[4])))
+    #print("header sentinels: " + str(hex(header_data[0])) + ", " + str(hex(header_data[4])))
 
     message_type = header_data[1].split(b'\0', 1)[0]  # remove the null characters from the string
-    print(message_type)
-    print("message size: " + str(header_data[2]))
+    #print(message_type)
+    #print("message size: " + str(header_data[2]))
 
     if message_type == b"text":
         text_bytes = f.read(header_data[2])
         print("text message: " + str(text_bytes))
+        str_msg = text_bytes.decode("utf-8")
+        print(str_msg[7])
+        if(str_msg[0] == "a"):
+            aisle_num_serial = int(str_msg[7])
     elif message_type == b"gyro":
         gyro_bytes = f.read(header_data[2])
         gyro_data = struct.unpack(">hhhhH", gyro_bytes)
@@ -63,7 +67,7 @@ def read_file(file_name):
 
 def read_serial(gyro_values, serialPort):
     # Wait until there is data waiting in the serial buffer
-    print("yoot")
+    #print("yoot")
     if serialPort.in_waiting > 0:
 
         try:
@@ -79,11 +83,13 @@ def read_serial(gyro_values, serialPort):
 
 
 # main program entry point
+"""
 if __name__ == '__main__':
     #hi = 5
     #gyro_values = [10]
     #read_file('C:/Users/Stewart Worrall/Documents/data/test.hex')
     while True:
-        read_serial("COM10", gyro_values)
+        read_serial(gyro_values)
 
     print(len(gyro_values))
+    """

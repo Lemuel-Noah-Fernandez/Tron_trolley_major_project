@@ -15,6 +15,12 @@
 #include "laser.h"
 
 #include "gyro.h"
+#include "serialise_send.h"
+
+char text_buffer[32];
+int rot_x = 0;
+int rot_y = 10;
+int rot_z = 100;
 
 
 #define BUFFER 200
@@ -99,6 +105,7 @@ void printErrorCode(IIC_ERRORS error_code) {
 }
 
 
+/*
 struct MSG_HEADER{
   int sentinel;
   char msg_type[8];
@@ -137,6 +144,7 @@ void SendGyroMsg(int rot_x, int rot_y, int rot_z) {
   SerialOutputBytes((char*)&gyro_message, sizeof(struct MSG_GYRO), &SCI1);  
 }
 
+*/
 
 void delay_ms(unsigned int time){
     int i;
@@ -214,17 +222,25 @@ void main(void) {
   
   #ifndef SIMULATION_TESTING
   
+  
+  sprintf(buffer, "aisle: 3");
+  SendTextMsg(buffer);
+  
   // initialise the sensor suite
   error_code = iicSensorInit();
   
   // write the result of the sensor initialisation to the serial
+  
   if (error_code == NO_ERROR) {
-    sprintf(buffer, "NO_ERROR\r\n");
-    SerialOutputString(buffer, &SCI1);
+    sprintf(buffer, "NO_ERROR");
+    SendTextMsg(buffer);
+    //SerialOutputString(buffer, &SCI1);
   } else {
     sprintf(buffer, "ERROR %d\r\n");
-    SerialOutputString(buffer, &SCI1);
+    SendTextMsg(buffer);
+    //SerialOutputString(buffer, &SCI1);
   }
+  
 
   laserInit();
   
@@ -238,8 +254,13 @@ void main(void) {
   //COPCTL = 7;
   _DISABLE_COP();
   setServoPose(0, 0);
+  
+ 
+	EnableInterrupts;
     
   for(;;) {
+  
+    //SendGyroMsg(rot_x, rot_y, rot_z);
   
     current_time = TCNT;
   
@@ -328,9 +349,10 @@ void main(void) {
     
     if(test_changed(previous_xmag, previous_ymag, previous_zmag, read_magnet) == 1){
       isle_number++;
-      sprintf(buffer, "isle: %d\n", isle_number);
-      SerialOutputString(buffer, &SCI1);
-      
+      sprintf(buffer, "aisle: %d\n", isle_number);
+      //SerialOutputString(buffer, &SCI1);
+      SendTextMsg(buffer);
+     
     }
     
     
@@ -339,15 +361,18 @@ void main(void) {
     //print angle values  
     sprintf(buffer,"w is %d, angle is %f\n", omega, angle);
     
+    sprintf(buffer, "aisle: %d", isle_number);
+    SendTextMsg(buffer);
+    isle_number++;
     
     
     //print magnet data
     //sprintf(buffer, "reading, diff z = %d, %d, y = %d, %d, x = %d, %d\n", read_magnet.z, previous_zmag - read_magnet.z, read_magnet.y, previous_ymag - read_magnet.y, read_magnet.x, previous_xmag - read_magnet.x); 
     
-    
-    
+   
     
     //SerialOutputString(buffer, &SCI1);
+    
     }
      
     //format the string of the sensor data to go the the serial    
