@@ -39,6 +39,43 @@ int j = 0;
 int new_command = 0;
 
 
+
+void sevensegmodule(int number){
+  unsigned char SegPat[10] = {
+  0x3F,         // pattern for 0
+  0x06,         // pattern for 1
+  0x5B,         // pattern for 2
+  0x4F,         // pattern for 3
+  0x66,         // pattern for 4
+  0x6D,         // pattern for 5
+  0x7D,         // pattern for 6
+  0x07,         // pattern for 7
+  0x7F,         // pattern for 8
+  0x6F          // pattern for 9
+  };       
+  
+  char digit[4] = {
+  0xFE,         //enable first seven seg
+  0xFD,         //enable second seven seg
+  0xFB,         //enable third seven seg
+  0xF7          //enable fourth seven seg
+  };
+ 
+  PORTB = 0;
+  DDRB  = 0xFF;  //enable 7-seg
+  DDRP  = 0x3F;  //Select which digit will be used
+  PTP   = 0x07;
+ 
+ 
+  PORTB = 0; //sets 7-seg low
+  PTP = 0x07;  //turn the secod 7-seg on
+  PORTB = SegPat[number];
+
+  
+  
+  return;   
+}
+
 int test_changed(int prevx, int prevy, int prevz, MagRaw readmagnet){
 
   if(prevx - readmagnet.x > 10000){
@@ -227,7 +264,8 @@ void main(void) {
   SendTextMsg(buffer);
   
   // initialise the sensor suite
-  error_code = iicSensorInit();
+  //error_code = iicSensorInit();
+  
   
   // write the result of the sensor initialisation to the serial
   
@@ -377,24 +415,7 @@ void main(void) {
      
     //format the string of the sensor data to go the the serial    
     //sprintf(buffer,"%f, %d\r\n",float_time_diff, read_gyro.x);
-   
-    // output the data to serial
-    //SerialOutputString(buffer, &SCI1);
-    
-    //SendGyroMsg(read_gyro.x, read_gyro.y, read_gyro.z);
-    
-    
-    
-    /*
-    if(count%100 == 0){
-    sprintf(buffer, "time: %f, accel: %.2f velocity: %f, displacement: %f\n",float_time_diff, 9.8*scaled_accel.y, velocity, distance);
-    SerialOutputString(buffer, &SCI1);
-    }
-    
-     */
-    
-    
-    //change_servo_angle(0);
+
     
     /*
     if(finish_flag == 0){
@@ -414,9 +435,14 @@ void main(void) {
     previous_angle = desired_angle;
     desired_angle = atoi(command);
     change_servo_angle(desired_angle, previous_angle);
+    sevensegmodule(atoi(command));
+    
     new_command = 0;
     
+    
     }
+
+    
     
     if(count%5 == 0){
       previous_xmag = read_magnet.x;
@@ -454,8 +480,11 @@ __interrupt void Serial_ReadISR(void){
     // End of sentence? Look for a carriage return
     if (SCI1DRL == 0x0D) 
     {
+    
       //add in null terminator to string    
       sentence[j] = '\0';
+      
+      
       
       //copies sentence to command 
       strcpy(command, sentence);
@@ -476,7 +505,11 @@ __interrupt void Serial_ReadISR(void){
     else
     {
       sentence[j] = SCI1DRL;
+      
+      
+      //output the character to the serial so it can be seen
       SerialOutputChar(sentence[j], &SCI1);
+      
       
       //incrememnt length of word
       j = j + 1;

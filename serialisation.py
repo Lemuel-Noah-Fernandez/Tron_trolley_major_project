@@ -33,6 +33,7 @@ def read_packet(f, gyro_values):
         print(str_msg[7])
         if(str_msg[0] == "a"):
             aisle_num_serial = int(str_msg[7])
+            return aisle_num_serial
     elif message_type == b"gyro":
         gyro_bytes = f.read(header_data[2])
         gyro_data = struct.unpack(">hhhhH", gyro_bytes)
@@ -72,7 +73,8 @@ def read_serial(gyro_values, serialPort):
 
         try:
             if not read_packet(serialPort, gyro_values):
-                print("yeet")
+                pass
+                #print("yeet")
         except Exception as e:
             # Logs the error appropriately. 
             print(traceback.format_exc())

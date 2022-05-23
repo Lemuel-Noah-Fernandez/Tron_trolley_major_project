@@ -104,6 +104,7 @@ def draw_aisles():
 exit_game = False
 while exit_game == False:
     aisle_num_serial = 0
+    serialisation.serialPort.write(b'5\n')
     aisle_num_serial = serialisation.read_serial(serialisation.gyro_values, serialisation.serialPort)
     if aisle_num_serial != None:
         print(aisle_num_serial)
