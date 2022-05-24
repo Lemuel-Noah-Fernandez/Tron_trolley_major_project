@@ -85,13 +85,20 @@ def read_serial(gyro_values, serialPort):
 
 
 # main program entry point
-"""
+
 if __name__ == '__main__':
     #hi = 5
     #gyro_values = [10]
     #read_file('C:/Users/Stewart Worrall/Documents/data/test.hex')
     while True:
-        read_serial(gyro_values)
+        number = 1
+        msg = input("Enter a message to send: ")
+        msg = msg + '\r'
 
-    print(len(gyro_values))
-    """
+        for i in msg:
+            send_msg = i.encode("utf-8")
+            serialPort.write(send_msg)
+            time.sleep(0.01)
+        
+        
+        #read_serial(gyro_values, serialPort)
