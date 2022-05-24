@@ -1,10 +1,10 @@
 # Trontrolley
 
 ## The Problem:
-In a world where automation is slowly taking over the world, the need for automated guidance in the supermarket setting where the number of items grows, is imminent for consumer convenience. In a bid to increase supermarket efficiency and the customer experience, our project, Tron Trolley, eliminates unneccessary time, and delivers convenience for the customer, by providing a trolley that can guide the customer to the aisle of the item location after an item is inputted into the system.
+In a world where automation is slowly taking over the world, the need for automated guidance in the supermarket setting where the number of items grows, is imminent for consumer convenience. In a bid to increase supermarket efficiency and the customer experience, our project, Tron Trolley, eliminates unneccessary time, and delivers convenience for the customer, by providing a trolley that can guide the customer to the aisle of the item location after an item is inputted into the system. Tron Trolley also acts as an important precursor to an automated shopping trolley - with more time and resources, full automation of the shopping experience could be achieved.
 
 Our TronTrolley displays the trolley's location, the aisle number of the item, and finally the location of that aisle via a pointer. The functionality
-is split into the following modules
+is split into the following modules.
 
 
 ## Each module and its function
@@ -13,7 +13,9 @@ Our project includes software modules using Python, and hardware modules using H
 ### HCS12 modules:
 
 #### Magnetometer
-The functionality of the module is to indicate to the system which aisle the trolley is currently in. The module reads raw data from the magentometer and detects a change in the x and y fields. If the change in x and y fields are big enough and surpass a given condition, the module recognises this as that a magnet is present and outputs a signal to the rest of the system.
+The functionality of the module is to measure the magnetic field strength. The module returns a binary result if the magnetic field is above a certain threshold or not, to indicate if there is a magnet nearby.
+
+indicate to the system which aisle the trolley is currently in. The module reads raw data from the magentometer and detects a change in the x and y fields. If the change in x and y fields are big enough and surpass a given condition, the module recognises this as that a magnet is present and outputs a signal to the rest of the system.
 
 #### Accelerometer
 This module should read in the raw data from the accelerometers, and also take in the values from the magnetometer module. Some basic filtering should be completed to remove high frequency noise. The signals should be integrated once to determine velocity in x and y. The velocities are returned. These velocities should be reset every time the magnet reading is high to reduce integration drift.
