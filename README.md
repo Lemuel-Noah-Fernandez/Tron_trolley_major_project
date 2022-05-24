@@ -23,23 +23,23 @@ This module should take in the binary responses from the magnetometer and the ve
 
 if current magnet == high and previous magnet == low and velocity > 0:
 
-  we have moved from between aisle i and aisle i+1 to aisle i+1
+    we have moved from between aisle i and aisle i+1 to aisle i+1
   
 if current magnet == low and previous magnet == high and velocity > 0:
 
-  we have moved from aisle i to between aisle i and aisle i+1
+    we have moved from aisle i to between aisle i and aisle i+1
   
 if current magnet == high and previous magnet == low and velocity < 0:
 
-  we have moved from between aisle i and aisle i-1 to aisle i-1
+    we have moved from between aisle i and aisle i-1 to aisle i-1
   
 if current magnet == low and previous magnet == high and velocity < 0:
 
-  we have moved from aisle i to between aisle i and aisle i-1
+    we have moved from aisle i to between aisle i and aisle i-1
   
 if current magnet == previous magnet:
 
-  we have not moved
+    we have not moved
 
 ### LCD Display
 This module displays the requested item and it's aisle number. This data comes from the serialisation module.
