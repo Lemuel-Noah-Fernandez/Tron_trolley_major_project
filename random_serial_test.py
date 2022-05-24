@@ -91,7 +91,6 @@ if __name__ == '__main__':
     #gyro_values = [10]
     #read_file('C:/Users/Stewart Worrall/Documents/data/test.hex')
     while True:
-        number = 1
         msg = input("Enter a message to send: ")
         msg = msg + '\r'
 
