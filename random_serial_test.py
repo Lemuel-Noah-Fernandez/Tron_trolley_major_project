@@ -8,7 +8,7 @@ import traceback
 MSG_HEADER_SIZE = 16
 hi = 5
 gyro_values = [10]
-com_port = "COM8"
+com_port = "COM4"
 serialPort = serial.Serial(port=com_port, baudrate=115200, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
 # serialString = ""  # Used to hold data coming over UART
 

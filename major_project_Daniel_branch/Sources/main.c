@@ -420,6 +420,12 @@ void main(void) {
      sevensegmodule(sevensegnum);
     }
     
+    if(command[0] == 'R'){
+    
+      sprintf(buffer, "aisle: %d", isle_number);
+      SendTextMsg(buffer);
+    }
+    
     
     /*
     data[data_count] = atoi(sentence);

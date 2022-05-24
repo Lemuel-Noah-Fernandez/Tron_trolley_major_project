@@ -5,6 +5,7 @@ import pygame
 import super_alt
 import math
 import time
+import map_simulation.serial_sim as serial_sim
 
 # import our defined classes
 from location_alt import Location
@@ -27,7 +28,9 @@ def search_and_run():
     initial_y = 575
     
     # First runs search function 
-    [aisle_name, aisle_row] = super_alt.main_search()
+    found = False
+    while found == False:
+        [aisle_name, aisle_row, search_word, found] = super_alt.main_search()
     aisle_num = int(aisle_name[6])
     print(aisle_num)
     print(type(aisle_num))
@@ -92,6 +95,16 @@ def controls(events, player, aisle):
                 player.move_down(15)
     return exit_game
 
+def send_message(serialPort, message):
+    msg = message + '\r'
+
+    for i in msg:
+        send_msg = i.encode("utf-8")
+        serialPort.write(send_msg)
+        time.sleep(0.01)
+    
+    return
+
 # TODO
 # draw the aisles of the tron lab as white lines onto the map
 # pygame.draw.line function should do it, just gotta get dimensions of some sort
@@ -117,6 +130,12 @@ while exit_game == False:
     #if aisle_num_serial != None:
         #print(aisle_num_serial)
 
+    # Writing to serial port
+    send_message(serial_sim.serialPort, "L {}: Aisle {}".format(search_word, aisle_num))
+    time.sleep(0.1)
+    send_message(serial_sim.serialPort, "S {}".format((aisle_num_serial)))
+    time.sleep(0.1)
+
     events = pygame.event.get()
     exit_game = controls(events, trolley, aisle_num_serial)
     tan_angle = ((575 - product_y)/(product_x - (100 + (aisle_num_serial * 250))))
@@ -124,6 +143,18 @@ while exit_game == False:
         angle = math.degrees(math.atan(tan_angle))
     else:
         angle = 180 + math.degrees(math.atan(tan_angle))
+    if angle <= 25:
+        angle = 50
+    elif 26 < angle < 75:
+        angle = 30
+    elif 75 < angle < 115:
+        angle = 19
+    elif 115 < angle < 150:
+        angle = 6
+    else:
+        angle = 1
+    send_message(serial_sim.serialPort, "A {}".format(angle))
+
     draw_map()
 
     # Break if the aisle has been reached

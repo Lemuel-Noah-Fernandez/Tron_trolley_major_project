@@ -114,7 +114,7 @@ while exit_game == False:
     # Writing to serial port
     send_message(serialisation.serialPort, "L {}: Aisle {}".format(search_word, aisle_num))
     time.sleep(0.1)
-    send_message(serialisation.serialPort, "S {}".format((aisle_num)))
+    send_message(serialisation.serialPort, "S {}".format((aisle_num_serial)))
     time.sleep(0.1)
     
     # Reading from serial port
