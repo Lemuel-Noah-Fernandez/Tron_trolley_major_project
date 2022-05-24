@@ -82,6 +82,16 @@ def read_serial(gyro_values, serialPort):
     else:
         time.sleep(0.05)
 
+def send_message(serialPort, message):
+    
+    msg = message + '\r'
+
+    for i in msg:
+        send_msg = i.encode("utf-8")
+        serialPort.write(send_msg)
+        time.sleep(0.01)
+    
+    return 
 
 
 # main program entry point

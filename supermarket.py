@@ -37,9 +37,10 @@ def main_search():
     aisle_name = df.columns[best_idx[1]]
     aisle_row = best_idx[0] + 1
     aisle_type = all_foods[0,best_idx[1]]
-
+    found = True
     if best_score < 0.5:
         print("Item not found, please try again.")
+        found = False
     else:
         if best_score != 1:
             print(f"Searching for closest match: {closest_word}")
@@ -51,7 +52,4 @@ def main_search():
             else:
                 print(f"{closest_word} is in {aisle_name} ({aisle_type}).")
 
-    return aisle_name, aisle_row
-    
-# Run function
-#main_search()
+    return aisle_name, aisle_row, search_word, found

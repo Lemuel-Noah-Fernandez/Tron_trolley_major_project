@@ -4,13 +4,16 @@
 import pygame
 import supermarket
 import math
+import time
 
 # import our defined classes
 from location_class import Location
 import serialisation
 
 # First runs search function 
-[aisle_name, aisle_row] = supermarket.main_search()
+found = False
+while found == False:
+    [aisle_name, aisle_row, search_word, found] = supermarket.main_search()
 aisle_num = int(aisle_name[6])
 print(aisle_num)
 print(type(aisle_num))
@@ -70,7 +73,7 @@ def controls(events, player, aisle):
     exit_game = False
 
     # Updating trolley position
-    player.set_position(100 + (aisle * 250), 575)
+    player.set_position(135 + (aisle * 200), 575)
 
     # Loop through all actions taken by user
     for event in events:
@@ -94,15 +97,33 @@ def controls(events, player, aisle):
 def draw_aisles():
     for i in range(5):
         pygame.draw.rect(screen, WHITE, pygame.Rect(((i+1)*200), 0, 100, 350), 0)  
+
+def send_message(serialPort, message):
+    msg = message + '\r'
+
+    for i in msg:
+        send_msg = i.encode("utf-8")
+        serialPort.write(send_msg)
+        time.sleep(0.01)
+    
+    return 
   
 exit_game = False
-aisle_num_serial = False
+aisle_num_serial = 0
 while exit_game == False:
+    # Writing to serial port
+    send_message(serialisation.serialPort, "L {}: Aisle {}".format(search_word, aisle_num))
+    send_message(serialisation.serialPort, "S {}".format((aisle_num)))
+    
+    # Reading from serial port
     aisle_num_serial = serialisation.read_serial(serialisation.gyro_values, serialisation.serialPort)
     if aisle_num_serial != None:
         print(aisle_num_serial)
+    else:
+        aisle_num_serial = 0
+    
     events = pygame.event.get()
-    exit_game = controls(events, trolley)
+    exit_game = controls(events, trolley, aisle_num_serial)
 
     # Calculating the gyro angle needed
     tan_angle = ((575 - product_y)/(product_x - (100 + (aisle_num_serial * 250))))
