@@ -63,7 +63,7 @@ void sevensegmodule(int number){
  
   PORTB = 0;
   DDRB  = 0xFF;  //enable 7-seg
-  DDRP  = 0x0F;  //Select which digit will be used
+  DDRP  = 0x3F;  //Select which digit will be used
   PTP   = 0x07;
  
  
@@ -186,6 +186,9 @@ void main(void) {
   int isle_number = 0;
   int data[10];
   int data_count = 0;
+  
+  char* LCD_buffer[100];
+  int sevensegnum;
 
   
 
@@ -394,8 +397,29 @@ void main(void) {
     if(new_command == 1){
     
    
+    //LCD processing
+    if(command[0] == 'L'){
+    
+    strcpy(LCD_buffer, command + 2);
     openLCD();
-    putsLCD(command);
+    putsLCD(LCD_buffer); 
+    
+    }
+    
+    //Angle Processing
+    if(command[0] == 'A'){
+    
+    desired_angle = atoi(command + 2);
+    //change_servo_angle(desired_angle, 0);
+    }
+    
+    //Seven Seg Module
+    if(command[0] == 'S'){
+     
+     sevensegnum = atoi(command + 2);
+     sevensegmodule(sevensegnum);
+    }
+    
     
     /*
     data[data_count] = atoi(sentence);
