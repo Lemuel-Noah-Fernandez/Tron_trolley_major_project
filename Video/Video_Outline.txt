@@ -1,0 +1,3 @@
+a) The overall problem being addressed
+b) The function of each module (include a brief description of each)
+c) The overall functioning of the system
