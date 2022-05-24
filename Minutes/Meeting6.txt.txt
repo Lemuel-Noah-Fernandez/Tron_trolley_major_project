@@ -12,9 +12,13 @@ Previous Actions:
 Regular Items
 - Moved to shift some things to simulation only
 - Made progress in presentation and video
+- Attempting some test cases for our individual modules
 
 New Items
 - Tried out code on seperate hardware, however nothing has managed to work on any hardware beyond the LCD
+- Have a video of our LCD board working with Pygame showing a customer moving from the start of the supermarket to the desired aisle
+- Item name and aisle location is displayed on the LCD and the current aisle is displayed on the 7 Seg
+- When the desired and current aisle match, the pygame screen shows a message highlighting that the item has been reached
 
 
 Goals for next meetings
