@@ -2,10 +2,11 @@
 
 # import external modules
 import pygame
+from sympy import continued_fraction_iterator
 import super_alt
 import math
 import time
-import map_simulation.serial_sim as serial_sim
+import serial_sim
 
 # import our defined classes
 from location_alt import Location
@@ -62,7 +63,7 @@ def search_and_run():
 
     # Control how fast the screen updates (FPS)
     clock = pygame.time.Clock()
-    return product_x, product_y, all_locations, clock, trolley, aisle_num, screen
+    return product_x, product_y, all_locations, clock, trolley, aisle_num, screen, search_word
 
 def draw_map():
     all_locations.update()
@@ -116,24 +117,31 @@ def draw_aisles():
 
 # little mini loop to control the trolley by arrow keys
 # replace this with data from microcontroller when ready    
-[product_x, product_y, all_locations, clock, trolley, aisle_num, screen] = search_and_run()
+[product_x, product_y, all_locations, clock, trolley, aisle_num, screen, search_word] = search_and_run()
 exit_game = False
 aisle_num_serial = 0
 angle = 0
 counter = 0
+
 while exit_game == False:
-    counter += 1
-    if counter % 100 == 0:
-        aisle_num_serial += 1
-    #serialisation.serialPort.write(b'5\n')
-    #aisle_num_serial = serialisation.read_serial(serialisation.gyro_values, serialisation.serialPort)
-    #if aisle_num_serial != None:
-        #print(aisle_num_serial)
+
+
+    if counter % 2 == 0:
+        
+        send_message(serial_sim.serialPort, "R ")
+        aisle_num_serial = None
+        while aisle_num_serial == None or aisle_num_serial == False:
+            #print("hi",counter)
+            aisle_num_serial = serial_sim.read_serial(serial_sim.gyro_values, serial_sim.serialPort)
+            #send_message(serial_sim.serialPort, "R ")
+            #time.sleep(0.001)
+        print(aisle_num_serial)
 
     # Writing to serial port
     send_message(serial_sim.serialPort, "L {}: Aisle {}".format(search_word, aisle_num))
     time.sleep(0.1)
     send_message(serial_sim.serialPort, "S {}".format((aisle_num_serial)))
+    
     time.sleep(0.1)
 
     events = pygame.event.get()
@@ -156,6 +164,7 @@ while exit_game == False:
     send_message(serial_sim.serialPort, "A {}".format(angle))
 
     draw_map()
+    counter += 1
 
     # Break if the aisle has been reached
     if aisle_num_serial == aisle_num:
@@ -166,7 +175,7 @@ while exit_game == False:
         pygame.display.flip()
         time.sleep(5)
         counter, aisle_num_serial = 0, 0
-        [product_x, product_y, all_locations, clock, trolley, aisle_num, screen] = search_and_run()
+        [product_x, product_y, all_locations, clock, trolley, aisle_num, screen, search_word] = search_and_run()
         #break
 # Exit the game
 pygame.quit()

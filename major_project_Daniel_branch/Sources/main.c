@@ -202,6 +202,8 @@ void main(void) {
   
   char buffer[200];  
   
+  
+  
   unsigned long singleSample;
   
   
@@ -230,7 +232,7 @@ void main(void) {
   
   
   // write the result of the sensor initialisation to the serial
-  
+  /*
   if (error_code == NO_ERROR) {
     sprintf(buffer, "NO_ERROR");
     //SendTextMsg(buffer);
@@ -240,7 +242,7 @@ void main(void) {
     //SendTextMsg(buffer);
     SerialOutputString(buffer, &SCI1);
   }
-  
+  */ 
 
   laserInit();
   
@@ -260,8 +262,19 @@ void main(void) {
     
     
     
-  sevensegmodule(3);
+  sevensegmodule(0);
+  
+  sprintf(buffer, "aisle: 1");
+  
+  
+  /*
+  while(1){
+   SendTextMsg(buffer);
+  }
  
+  */
+  
+  
   
   for(;;) {
     
@@ -273,6 +286,7 @@ void main(void) {
     current_time = TCNT;
     
     
+    /*
   
     #ifndef SIMULATION_TESTING
   
@@ -305,6 +319,7 @@ void main(void) {
         
     #else
     
+    
     // inject some values for simulation
     read_gyro.x = 123; read_gyro.y = 313; read_gyro.z = 1002;
     read_accel.x = 124; read_accel.y = 312; read_accel.z = 2002;
@@ -334,7 +349,9 @@ void main(void) {
       
     }
     
-    /*
+    
+    
+    
     if(read_gyro.x < -10000) {
       omega = 0;
     } else{
@@ -352,8 +369,8 @@ void main(void) {
     angle = angle + float_time_diff* (float)omega;
     scaled_angle = angle/13.88888;
     
-    */
-    
+   
+    /*
     if(test_changed(previous_xmag, previous_ymag, previous_zmag, read_magnet) == 1){
       isle_number++;
       sprintf(buffer, "aisle: %d\n", isle_number);
@@ -363,7 +380,7 @@ void main(void) {
     }
     
     
-    /*
+    
     if(count%100 == 0){
     
     //print angle values  
@@ -384,7 +401,7 @@ void main(void) {
     }
      
 
-    */
+  
 
     if(count%5 == 0){
       previous_xmag = read_magnet.x;
@@ -392,6 +409,7 @@ void main(void) {
       previous_zmag = read_magnet.z;
     }
     
+    */
     
     
     if(new_command == 1){
@@ -417,36 +435,23 @@ void main(void) {
     if(command[0] == 'S'){
      
      sevensegnum = atoi(command + 2);
-     sevensegmodule(sevensegnum);
+     //sevensegmodule(sevensegnum);
     }
     
+    //request aisle
     if(command[0] == 'R'){
-    
+      
+      isle_number++;
+      if(isle_number == 6){
+        isle_number == 0;
+      }
+      
+      sevensegmodule(isle_number);
       sprintf(buffer, "aisle: %d", isle_number);
       SendTextMsg(buffer);
     }
     
-    
-    /*
-    data[data_count] = atoi(sentence);
-    sevensegmodule(data[data_count]);
-    data_count++;
-    
-    if(data_count == 3){
-      data_count == 0;
-    }                 
-    
-    if(data_count == 2){
-      desired_angle = 10*data[1] + data[2];
-      //change_servo_angle(desired_angle, 0);
-    }
-    
-    */
-    
-    
-    //previous_angle = desired_angle;
-    //desired_angle = atoi(command);
-    //change_servo_angle(desired_angle, previous_angle);
+   
     
     new_command = 0;
     
