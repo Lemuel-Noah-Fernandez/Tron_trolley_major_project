@@ -10,19 +10,22 @@ Previous Actions:
 - Progress report finished
 
 Regular Items
-
+- Everyone working on their assigned part based on progress report
 
 New Items
+- Magnetometer is up and working with Magnets provided by Duncan
+- Need to calibrate the magentometer depending on the sensitivity we want
+- Managed to download pygame and other necessary programs on Daniel's laptop
+- Serialisation working to some degree from help from Andre
 
 
-
-- Goals for next meetings
-	
-	-
+Goals for next meetings
+- Video and presentation
 	
 
 Any Other Business
-
+- N/A
 
 
 Next Meetings
+- 24/05/2022 Tuesday
