@@ -1,0 +1,29 @@
+Meeting 6:
+Date: 24/05/2022
+
+Present: Lem, Will, Duncan, Daniel, Henry
+Missing: N/A
+
+To do today: Attempt to finish the video and presentation
+
+Previous Actions:
+- Hardware has stopped working at most times
+
+Regular Items
+- Moved to shift some things to simulation only
+- Made progress in presentation and video
+
+New Items
+- Tried out code on seperate hardware, however nothing has managed to work on any hardware beyond the LCD
+
+
+Goals for next meetings
+- Video and presentation finished and project finished
+	
+
+Any Other Business
+- N/A
+
+
+Next Meetings
+- 25/05/2022 Wednesday
