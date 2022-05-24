@@ -20,15 +20,25 @@ This module should read in the raw data from the accelerometers and apply basic 
 
 #### Location module
 This module should take in the binary responses from the magnetometer and the velocities from the accelerometer. It should then return the location of the trolley with respect to a 1-dimensional grid. The grid resolution is double that of the number of magnet markers. The location is determined using the logic defined below in pseudocode:
+
 if current magnet == high and previous magnet == low and velocity > 0:
+
   we have moved from between aisle i and aisle i+1 to aisle i+1
+  
 if current magnet == low and previous magnet == high and velocity > 0:
+
   we have moved from aisle i to between aisle i and aisle i+1
+  
 if current magnet == high and previous magnet == low and velocity < 0:
+
   we have moved from between aisle i and aisle i-1 to aisle i-1
+  
 if current magnet == low and previous magnet == high and velocity < 0:
+
   we have moved from aisle i to between aisle i and aisle i-1
+  
 if current magnet == previous magnet:
+
   we have not moved
 
 ### LCD Display
