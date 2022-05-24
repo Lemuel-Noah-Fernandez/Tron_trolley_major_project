@@ -113,7 +113,9 @@ aisle_num_serial = 0
 while exit_game == False:
     # Writing to serial port
     send_message(serialisation.serialPort, "L {}: Aisle {}".format(search_word, aisle_num))
+    time.sleep(0.1)
     send_message(serialisation.serialPort, "S {}".format((aisle_num)))
+    time.sleep(0.1)
     
     # Reading from serial port
     aisle_num_serial = serialisation.read_serial(serialisation.gyro_values, serialisation.serialPort)
@@ -131,6 +133,17 @@ while exit_game == False:
         angle = math.degrees(math.atan(tan_angle))
     else:
         angle = 180 + math.degrees(math.atan(tan_angle))
+    if angle <= 25:
+        angle = 50
+    elif 26 < angle < 75:
+        angle = 30
+    elif 75 < angle < 115:
+        angle = 19
+    elif 115 < angle < 150:
+        angle = 6
+    else:
+        angle = 1
+    send_message(serialisation.serialPort, "A {}".format(angle))
     draw_map()
     
 # Exit the game

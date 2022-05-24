@@ -266,7 +266,7 @@ void main(void) {
   for(;;) {
     
     
-    /*
+    
   
     //SendGyroMsg(rot_x, rot_y, rot_z);
   
@@ -302,9 +302,6 @@ void main(void) {
 
     }
     
-
-    
-    //GetLatestLaserSample(&singleSample);
         
     #else
     
@@ -337,6 +334,7 @@ void main(void) {
       
     }
     
+    /*
     if(read_gyro.x < -10000) {
       omega = 0;
     } else{
@@ -354,7 +352,7 @@ void main(void) {
     angle = angle + float_time_diff* (float)omega;
     scaled_angle = angle/13.88888;
     
-    
+    */
     
     if(test_changed(previous_xmag, previous_ymag, previous_zmag, read_magnet) == 1){
       isle_number++;
@@ -365,6 +363,7 @@ void main(void) {
     }
     
     
+    /*
     if(count%100 == 0){
     
     //print angle values  
@@ -385,6 +384,7 @@ void main(void) {
     }
      
 
+    */
 
     if(count%5 == 0){
       previous_xmag = read_magnet.x;
@@ -392,7 +392,7 @@ void main(void) {
       previous_zmag = read_magnet.z;
     }
     
-    */
+    
     
     if(new_command == 1){
     
@@ -410,7 +410,7 @@ void main(void) {
     if(command[0] == 'A'){
     
     desired_angle = atoi(command + 2);
-    //change_servo_angle(desired_angle, 0);
+    change_servo_angle(desired_angle, 0);
     }
     
     //Seven Seg Module
