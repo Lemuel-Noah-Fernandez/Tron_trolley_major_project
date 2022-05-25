@@ -68,3 +68,34 @@ This module allows the user to search for items or categories in the supermarket
 #### Mapping module
 This module takes in the location data from the serialisation (trolley location) and search (item location) modules. It then displays these locations on a basic map of the Tron Lab using pygame. This module should also calculate the angle of rotation required by the servo.
 
+## Test Cases
+
+Input (laptop): Milk
+
+Expected outputs while traveling to destination
+
+> LCD: "milk: Isle 4"
+
+> 7SEG: current isle number (should increment aprox every 3 seconds with demonstration)
+
+> Python map: Blue dot in isle 4, red dot moving every 3 seconds along isles 
+
+> Servo: point in direction of isle 4, change angle every 3 seconds in time with location updates 
+
+Expected outputs when arrived
+
+> LCD: "congratulations you've arrived"
+
+> 7SEG: 4
+
+> Python map: Blue dot in isle 4, red dot is in isle 4
+
+> Servo: lidar points towards top of isle 
+
+> Speaker: Plays mii tune
+
+
+Input (laptop): Gun
+
+> Output (laptop): "Item not found\n Search Item:"
+
