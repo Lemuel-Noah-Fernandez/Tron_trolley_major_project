@@ -39,6 +39,17 @@ unsigned int note[] = {rest,        //0
     Ab5                             //30
     };
 
+unsigned int duration[] =
+{
+    dbreve,
+    breve,
+    semibreve,
+    minim,
+    crotchet, 
+    quaver,
+    semiquav
+};
+
 int mii_song_notes[] = {16, 19, 23, 19, 16, 12, 0, 12, 0, 12, 0, 16, 19, 23, 0, 19, 16, 26, 25, 24};  //20
 int mii_song_duration[] = {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 6, 5, 5, 4, 5, 5};
 
