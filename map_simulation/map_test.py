@@ -131,17 +131,15 @@ while exit_game == False:
         send_message(serial_sim.serialPort, "R ")
         aisle_num_serial = None
         while aisle_num_serial == None or aisle_num_serial == False:
-            #print("hi",counter)
+            
             aisle_num_serial = serial_sim.read_serial(serial_sim.gyro_values, serial_sim.serialPort)
-            #send_message(serial_sim.serialPort, "R ")
-            #time.sleep(0.001)
+            
         print(aisle_num_serial)
         
 
     # Writing to serial port
     send_message(serial_sim.serialPort, "L {}: Aisle {}".format(search_word, aisle_num))
     time.sleep(0.1)
-
 
 
     events = pygame.event.get()
@@ -152,8 +150,6 @@ while exit_game == False:
     if (product_x - (100 + (aisle_num_serial * 250))) >= 0:
         angle = 175.0 - math.degrees(math.atan(tan_angle))
     else:
-        #tan_angle = ((575 - product_y)/((product_x + 30) - (100 + (aisle_num_serial * 250))))
-        #angle = math.degrees(math.atan(tan_angle))
         angle = 69
 
     #send out the message for the servo to turn appropriately 
@@ -170,7 +166,7 @@ while exit_game == False:
     if aisle_num_serial == aisle_num:
 
         time.sleep(1)
-        send_message(serial_sim.serialPort, "T {}".format(10))
+        send_message(serial_sim.serialPort, "T {}".format(6))
 
         font = pygame.font.Font(None, 100)
         text = font.render('Aisle reached!', True, (255,255,255))

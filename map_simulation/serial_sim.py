@@ -13,19 +13,6 @@ com_port = "COM4"
 serialPort = serial.Serial(port=com_port, baudrate=115200, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
 # serialString = ""  # Used to hold data coming over UART
 
-def read_file(file_name):
-    # open the file
-    with open(file_name, "rb") as f:
-        while True:
-            try:
-                if not read_packet(f):
-                    break
-            except Exception as e:
-                print(traceback.format_exc())
-                break
-                # Logs the error appropriately. 
-    
-
 def read_serial(gyro_values, serialPort):
     # Wait until there is data waiting in the serial buffer
     #print("yoot")
@@ -87,7 +74,7 @@ def read_serial(gyro_values, serialPort):
         time.sleep(0.05)
 
 # main program entry point
-"""
+
 if __name__ == '__main__':
     #hi = 5
     #gyro_values = [10]
@@ -96,4 +83,3 @@ if __name__ == '__main__':
         read_serial(gyro_values)
 
     print(len(gyro_values))
-    """
