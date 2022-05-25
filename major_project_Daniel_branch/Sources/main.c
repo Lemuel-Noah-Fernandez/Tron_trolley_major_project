@@ -409,7 +409,7 @@ void main(void) {
     if(command[0] == 'S'){
      
      sevensegnum = atoi(command + 2);
-     //sevensegmodule(sevensegnum);
+     sevensegmodule(sevensegnum);
     }
     
     //request aisle
@@ -420,7 +420,7 @@ void main(void) {
         isle_number == 0;
       }
       
-      sevensegmodule(isle_number);
+      //sevensegmodule(isle_number);
       sprintf(buffer, "aisle: %d", isle_number);
       SendTextMsg(buffer);
     }

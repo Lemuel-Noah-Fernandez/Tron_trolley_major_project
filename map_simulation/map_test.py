@@ -136,13 +136,13 @@ while exit_game == False:
             #send_message(serial_sim.serialPort, "R ")
             #time.sleep(0.001)
         print(aisle_num_serial)
+        
 
     # Writing to serial port
     send_message(serial_sim.serialPort, "L {}: Aisle {}".format(search_word, aisle_num))
     time.sleep(0.1)
-    send_message(serial_sim.serialPort, "S {}".format((aisle_num_serial)))
-    
-    time.sleep(0.1)
+
+
 
     events = pygame.event.get()
     exit_game = controls(events, trolley, aisle_num_serial)
@@ -150,18 +150,26 @@ while exit_game == False:
     #new angle for servo to point to calculations
     tan_angle = ((575 - product_y)/(product_x - (100 + (aisle_num_serial * 250))))
     if (product_x - (100 + (aisle_num_serial * 250))) >= 0:
-        angle = math.degrees(math.atan(tan_angle))
+        angle = 175.0 - math.degrees(math.atan(tan_angle))
     else:
-        angle = 180 + math.degrees(math.atan(tan_angle))
+        #tan_angle = ((575 - product_y)/((product_x + 30) - (100 + (aisle_num_serial * 250))))
+        #angle = math.degrees(math.atan(tan_angle))
+        angle = 69
 
     #send out the message for the servo to turn appropriately 
-    send_message(serial_sim.serialPort, "A {}".format(angle))
+    send_message(serial_sim.serialPort, "A {}".format(int(angle)))
 
     draw_map()
+
+    send_message(serial_sim.serialPort, "S {}".format((aisle_num_serial)))
+    time.sleep(0.1)
+
     counter += 1
 
     # Break if the aisle has been reached
     if aisle_num_serial == aisle_num:
+
+        time.sleep(1)
         send_message(serial_sim.serialPort, "T {}".format(10))
 
         font = pygame.font.Font(None, 100)
