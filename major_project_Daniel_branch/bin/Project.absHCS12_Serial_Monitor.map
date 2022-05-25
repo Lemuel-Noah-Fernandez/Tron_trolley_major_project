@@ -56,7 +56,7 @@ Section Name                    Size  Type     From       To       Segment
 .rodata1                          65     R     0xC0F6     0xC136   ROM_C000
 NON_BANKED                      1458     R     0xC137     0xC6E8   ROM_C000
 .copy                             17     R     0xC6E9     0xC6F9   ROM_C000
-.text                           4321     R   0x308000   0x3090E0   PAGE_30
+.text                           4307     R   0x308000   0x3090D2   PAGE_30
 .stack                          4096   R/W     0x1000     0x1FFF   RAM
 .data                             12   R/W     0x2000     0x200B   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
@@ -406,7 +406,7 @@ NON_BANKED                      1458     R     0xC137     0xC6E8   ROM_C000
 .vectSeg342_vect                   2     R     0xFFFE     0xFFFF   .vectSeg342
 
 Summary of section sizes per section type:
-READ_ONLY (R):        185B (dec:     6235)
+READ_ONLY (R):        184D (dec:     6221)
 READ_WRITE (R/W):     11C1 (dec:     4545)
 NO_INIT (N/I):         190 (dec:      400)
 
@@ -767,9 +767,8 @@ MODULE:                 -- mc9s12dg256.c.o --
 MODULE:                 -- main.c.o --
 - PROCEDURES:
      sevensegmodule                          308000      5D      93       4   .text       
-     delay_ms                                30805D      1F      31      10   .text       
-     change_servo_angle                      30807C      24      36       2   .text       
-     main                                    3080A0     106     262       3   .text       
+     delay_ms                                30805D      1F      31       8   .text       
+     main                                    30807C     11C     284       3   .text       
      Serial_ReadISR                            C137      83     131       1   NON_BANKED  
 - VARIABLES:
      STRING.aisle..1.9                         C0F6       9       9       1   .rodata1    
@@ -778,10 +777,10 @@ MODULE:                 -- main.c.o --
      j                                         200C       2       2       5   .bss        
      new_command                               200E       2       2       3   .bss        
      sentence                                  202F      C8     200       4   .common     
-     command                                   20F7      C8     200       7   .common     
+     command                                   20F7      C8     200       8   .common     
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
-     Init                                    3081A6      29      41       2   .text       
+     Init                                    308198      29      41       2   .text       
      _Startup                                  C000      18      24       0   .init       
 - VARIABLES:
      _startupData                              C018       6       6       3   .startData  
@@ -789,17 +788,17 @@ MODULE:                 -- Start12.c.o --
      __SEG_END_SSTACK                          2000       0       0       1               
 MODULE:                 -- CTYPE.C.o (ansib.lib) --
 - PROCEDURES:
-     isdigit                                 3081CF       E      14       2   .text       
-     isspace                                 3081DD      17      23       4   .text       
-     toupper                                 3081F4      14      20       4   .text       
+     isdigit                                 3081C1       E      14       2   .text       
+     isspace                                 3081CF      17      23       4   .text       
+     toupper                                 3081E6      14      20       4   .text       
 - VARIABLES:
 MODULE:                 -- PRINTF.C.o (ansib.lib) --
 - PROCEDURES:
-     Ten                                     308208      AC     172       5   .text       
-     vprintf                                 3082B4     933    2355     128   .text       
-     _out                                    308BE7       C      12       2   .text       
-     deposit_char                            308BF3       F      15       3   .text       
-     sprintf                                 308C02      2F      47       4   .text       
+     Ten                                     3081FA      AC     172       5   .text       
+     vprintf                                 3082A6     933    2355     128   .text       
+     _out                                    308BD9       C      12       2   .text       
+     deposit_char                            308BE5       F      15       3   .text       
+     sprintf                                 308BF4      2F      47       4   .text       
 - VARIABLES:
      pow10                                     C022      28      40       6   .rodata     
      pow16                                     C04A      20      32       4   .rodata     
@@ -809,15 +808,15 @@ MODULE:                 -- PRINTF.C.o (ansib.lib) --
      pbuf                                      2010       7       7      16   .bss        
 MODULE:                 -- STDLIB.C.o (ansib.lib) --
 - PROCEDURES:
-     CheckCharWithBase                       308C31      3A      58       2   .text       
-     _strtoul                                308C6B     173     371      11   .text       
-     _strtol                                 308DDE      D6     214       4   .text       
-     strtol                                  308EB4      14      20       2   .text       
+     CheckCharWithBase                       308C23      3A      58       2   .text       
+     _strtoul                                308C5D     173     371      11   .text       
+     _strtol                                 308DD0      D6     214       4   .text       
+     strtol                                  308EA6      14      20       2   .text       
 - VARIABLES:
 MODULE:                 -- STRING.C.o (ansib.lib) --
 - PROCEDURES:
-     strlen                                  308EC8      14      20       4   .text       
-     strcpy                                  308EDC       D      13       4   .text       
+     strlen                                  308EBA      14      20       4   .text       
+     strcpy                                  308ECE       D      13       4   .text       
 - VARIABLES:
 MODULE:                 -- FADD.C.o (ansib.lib) --
 - PROCEDURES:
@@ -887,7 +886,7 @@ MODULE:                 -- VREGS.C.o (ansib.lib) --
 - VARIABLES:
 MODULE:                 -- pll.c.o --
 - PROCEDURES:
-     PLL_Init                                308EE9      15      21       2   .text       
+     PLL_Init                                308EDB      15      21       2   .text       
 - VARIABLES:
 MODULE:                 -- isr_vectors.c.o --
 - PROCEDURES:
@@ -905,27 +904,27 @@ MODULE:                 -- iic.c.o --
      alarmSet                                  201C       1       1       2   .bss        
 MODULE:                 -- simple_serial.c.o --
 - PROCEDURES:
-     SerialInitialise                        308EFE      42      66       2   .text       
-     SerialOutputChar                        308F40      11      17       4   .text       
-     SerialOutputBytes                       308F51      20      32       4   .text       
+     SerialInitialise                        308EF0      42      66       2   .text       
+     SerialOutputChar                        308F32      11      17       4   .text       
+     SerialOutputBytes                       308F43      20      32       4   .text       
 - VARIABLES:
      SCI1                                      2000       C      12       4   .data       
 MODULE:                 -- servo.c.o --
 - PROCEDURES:
-     PWMinitialise                           308F71      27      39       2   .text       
-     setServoPose                            308F98      11      17       6   .text       
-     Init_TC6                                308FA9      10      16       2   .text       
-     cmd2LCD                                 308FB9      3E      62      10   .text       
-     openLCD                                 308FF7      31      49       2   .text       
-     putcLCD                                 309028      42      66       2   .text       
-     putsLCD                                 30906A      10      16       2   .text       
+     PWMinitialise                           308F63      27      39       2   .text       
+     setServoPose                            308F8A      11      17       6   .text       
+     Init_TC6                                308F9B      10      16       2   .text       
+     cmd2LCD                                 308FAB      3E      62      10   .text       
+     openLCD                                 308FE9      31      49       2   .text       
+     putcLCD                                 30901A      42      66       2   .text       
+     putsLCD                                 30905C      10      16       2   .text       
      TC6_ISR                                   C64B      57      87       1   NON_BANKED  
 - VARIABLES:
      iterator_counter                          201D       4       4       6   .bss        
      toggle                                    2021       2       2       2   .bss        
 MODULE:                 -- laser.c.o --
 - PROCEDURES:
-     laserInit                               30907A      13      19       2   .text       
+     laserInit                               30906C      13      19       2   .text       
      TC1_ISR                                   C6A2      47      71       1   NON_BANKED  
 - VARIABLES:
      riseEdge                                  2023       4       4       7   .bss        
@@ -933,7 +932,7 @@ MODULE:                 -- laser.c.o --
      lastLaserSample                           202B       4       4       2   .bss        
 MODULE:                 -- serialise_send.c.o --
 - PROCEDURES:
-     SendTextMsg                             30908D      54      84       2   .text       
+     SendTextMsg                             30907F      54      84       2   .text       
 - VARIABLES:
 
 *********************************************************************************************
@@ -941,7 +940,7 @@ MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  main.c.o                                   404    553     65
+  main.c.o                                   404    539     65
   Start12.c.o                                  0     65      0
   CTYPE.C.o (ansib.lib)                        0     57      0
   PRINTF.C.o (ansib.lib)                       7   2601    212
@@ -968,11 +967,10 @@ MODULE STATISTIC
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
-  sevensegmodule delay_ms change_servo_angle main Init isdigit isspace toupper 
-  Ten vprintf _out deposit_char sprintf CheckCharWithBase _strtoul _strtol 
-  strtol strlen strcpy PLL_Init SerialInitialise SerialOutputChar 
-  SerialOutputBytes PWMinitialise setServoPose Init_TC6 cmd2LCD openLCD putcLCD 
-  putsLCD laserInit SendTextMsg 
+  sevensegmodule delay_ms main Init isdigit isspace toupper Ten vprintf _out 
+  deposit_char sprintf CheckCharWithBase _strtoul _strtol strtol strlen strcpy 
+  PLL_Init SerialInitialise SerialOutputChar SerialOutputBytes PWMinitialise 
+  setServoPose Init_TC6 cmd2LCD openLCD putcLCD putsLCD laserInit SendTextMsg 
 SECTION: ".data"
   SCI1 
 SECTION: ".bss"
@@ -2037,7 +2035,7 @@ OBJECT LIST SORTED BY ADDRESS
      fallEdge                                  2027       4       4       6   .bss        
      lastLaserSample                           202B       4       4       2   .bss        
      sentence                                  202F      C8     200       4   .common     
-     command                                   20F7      C8     200       7   .common     
+     command                                   20F7      C8     200       8   .common     
      errno                                     21BF       2       2       2   .common     
      _Startup                                  C000      18      24       0   .init       
      pow10                                     C022      28      40       6   .rodata     
@@ -2097,37 +2095,36 @@ OBJECT LIST SORTED BY ADDRESS
      TC1_ISR                                   C6A2      47      71       1   NON_BANKED  
      _vect                                     FF80      7E     126       0   .abs_section_ff80
      sevensegmodule                          308000      5D      93       4   .text       
-     delay_ms                                30805D      1F      31      10   .text       
-     change_servo_angle                      30807C      24      36       2   .text       
-     main                                    3080A0     106     262       3   .text       
-     Init                                    3081A6      29      41       2   .text       
-     isdigit                                 3081CF       E      14       2   .text       
-     isspace                                 3081DD      17      23       4   .text       
-     toupper                                 3081F4      14      20       4   .text       
-     Ten                                     308208      AC     172       5   .text       
-     vprintf                                 3082B4     933    2355     128   .text       
-     _out                                    308BE7       C      12       2   .text       
-     deposit_char                            308BF3       F      15       3   .text       
-     sprintf                                 308C02      2F      47       4   .text       
-     CheckCharWithBase                       308C31      3A      58       2   .text       
-     _strtoul                                308C6B     173     371      11   .text       
-     _strtol                                 308DDE      D6     214       4   .text       
-     strtol                                  308EB4      14      20       2   .text       
-     strlen                                  308EC8      14      20       4   .text       
-     strcpy                                  308EDC       D      13       4   .text       
-     PLL_Init                                308EE9      15      21       2   .text       
-     SerialInitialise                        308EFE      42      66       2   .text       
-     SerialOutputChar                        308F40      11      17       4   .text       
-     SerialOutputBytes                       308F51      20      32       4   .text       
-     PWMinitialise                           308F71      27      39       2   .text       
-     setServoPose                            308F98      11      17       6   .text       
-     Init_TC6                                308FA9      10      16       2   .text       
-     cmd2LCD                                 308FB9      3E      62      10   .text       
-     openLCD                                 308FF7      31      49       2   .text       
-     putcLCD                                 309028      42      66       2   .text       
-     putsLCD                                 30906A      10      16       2   .text       
-     laserInit                               30907A      13      19       2   .text       
-     SendTextMsg                             30908D      54      84       2   .text       
+     delay_ms                                30805D      1F      31       8   .text       
+     main                                    30807C     11C     284       3   .text       
+     Init                                    308198      29      41       2   .text       
+     isdigit                                 3081C1       E      14       2   .text       
+     isspace                                 3081CF      17      23       4   .text       
+     toupper                                 3081E6      14      20       4   .text       
+     Ten                                     3081FA      AC     172       5   .text       
+     vprintf                                 3082A6     933    2355     128   .text       
+     _out                                    308BD9       C      12       2   .text       
+     deposit_char                            308BE5       F      15       3   .text       
+     sprintf                                 308BF4      2F      47       4   .text       
+     CheckCharWithBase                       308C23      3A      58       2   .text       
+     _strtoul                                308C5D     173     371      11   .text       
+     _strtol                                 308DD0      D6     214       4   .text       
+     strtol                                  308EA6      14      20       2   .text       
+     strlen                                  308EBA      14      20       4   .text       
+     strcpy                                  308ECE       D      13       4   .text       
+     PLL_Init                                308EDB      15      21       2   .text       
+     SerialInitialise                        308EF0      42      66       2   .text       
+     SerialOutputChar                        308F32      11      17       4   .text       
+     SerialOutputBytes                       308F43      20      32       4   .text       
+     PWMinitialise                           308F63      27      39       2   .text       
+     setServoPose                            308F8A      11      17       6   .text       
+     Init_TC6                                308F9B      10      16       2   .text       
+     cmd2LCD                                 308FAB      3E      62      10   .text       
+     openLCD                                 308FE9      31      49       2   .text       
+     putcLCD                                 30901A      42      66       2   .text       
+     putsLCD                                 30905C      10      16       2   .text       
+     laserInit                               30906C      13      19       2   .text       
+     SendTextMsg                             30907F      54      84       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -2240,12 +2237,11 @@ TC1_ISR                   USES _PTT _TC1 riseEdge fallEdge lastLaserSample
 _vect                     USES UnimplementedISR Serial_ReadISR TC7_ISR TC6_ISR 
                                 TC1_ISR SoftwareInterrupt 
 sevensegmodule            USES _PORTAB _DDRAB _DDRP _PTP 
-change_servo_angle        USES setServoPose delay_ms 
 main                      USES PLL_Init PWMinitialise SCI1 SerialInitialise 
-                                laserInit Init_TC6 setServoPose sevensegmodule 
-                                STRING.aisle..1.9 sprintf _TCNT new_command command strcpy 
-                                openLCD putsLCD change_servo_angle STRING.aisle...d.10 
-                                SendTextMsg main strtol 
+                                laserInit Init_TC6 sevensegmodule STRING.aisle..1.9 
+                                sprintf _TCNT new_command command strcpy openLCD 
+                                putsLCD setServoPose STRING.aisle...d.10 SendTextMsg 
+                                main strtol 
 Init                      USES _startupData 
 Ten                       USES fpow10 fpow_10 Ten _FMUL 
 vprintf                   USES vprintf _CASE_SEARCH_8_BYTE _CASE_DIRECT_BYTE 
@@ -2292,8 +2288,6 @@ DEPENDENCY TREE
  |  +- laserInit           
  |  |    
  |  +- Init_TC6            
- |  |    
- |  +- setServoPose        
  |  |    
  |  +- sevensegmodule      
  |  |    
@@ -2421,12 +2415,8 @@ DEPENDENCY TREE
  |  |     | 
  |  |     +- delay_ms             (see above)
  |  |        
- |  +- change_servo_angle  
- |  |  | 
- |  |  +- setServoPose         (see above)
- |  |  |  
- |  |  +- delay_ms             (see above)
- |  |     
+ |  +- setServoPose        
+ |  |    
  |  +- SendTextMsg         
  |  |  | 
  |  |  +- strlen              
@@ -2508,5 +2498,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 7
-Total size of all blocks to be downloaded: 6235
+Total size of all blocks to be downloaded: 6221
 

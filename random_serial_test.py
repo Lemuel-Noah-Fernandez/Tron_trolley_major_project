@@ -146,12 +146,15 @@ def send_message(serialPort, message):
 
 if __name__ == '__main__':
 
-    msg = input("ready? ")
-    send_message(serialPort, "R ")
+    # msg = input("ready? ")
+    # send_message(serialPort, "R ")
 
-    while(True):
-        value = read_serial(gyro_values, serialPort)
-        send_message(serialPort, "R ")
-        time.sleep(0.01)
-        if value != None:
-            print(value)
+    # while(True):
+    #     value = read_serial(gyro_values, serialPort)
+    #     send_message(serialPort, "R ")
+    #     time.sleep(0.01)
+    #     if value != None:
+    #         print(value)
+    while True:
+        msg = input("Enter a command: ")
+        send_message(serialPort, msg)

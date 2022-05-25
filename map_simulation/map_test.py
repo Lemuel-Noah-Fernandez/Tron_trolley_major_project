@@ -148,19 +148,10 @@ while exit_game == False:
     exit_game = controls(events, trolley, aisle_num_serial)
     tan_angle = ((575 - product_y)/(product_x - (100 + (aisle_num_serial * 250))))
     if (product_x - (100 + (aisle_num_serial * 250))) >= 0:
-        angle = math.degrees(math.atan(tan_angle))
+        angle = math.degrees(math.atan(tan_angle)
     else:
         angle = 180 + math.degrees(math.atan(tan_angle))
-    if angle <= 25:
-        angle = 50
-    elif 26 < angle < 75:
-        angle = 30
-    elif 75 < angle < 115:
-        angle = 19
-    elif 115 < angle < 150:
-        angle = 6
-    else:
-        angle = 1
+
     send_message(serial_sim.serialPort, "A {}".format(angle))
 
     draw_map()
@@ -173,10 +164,10 @@ while exit_game == False:
         rect = text.get_rect(center=screen.get_rect().center)
         screen.blit(text, rect)
         pygame.display.flip()
-        time.sleep(5)
+        time.sleep(3)
         counter, aisle_num_serial = 0, 0
-        [product_x, product_y, all_locations, clock, trolley, aisle_num, screen, search_word] = search_and_run()
-        #break
+        #[product_x, product_y, all_locations, clock, trolley, aisle_num, screen, search_word] = search_and_run()
+        break
 # Exit the game
 pygame.quit()
 raise SystemExit

@@ -151,19 +151,6 @@ void delay_ms(unsigned int time){
 }
 
 
-void change_servo_angle(int angle, int old_angle){
-  
-  int previous_angle = old_angle;
-  
-
-  while(previous_angle < angle*4){
-    setServoPose(2 + previous_angle, 0);
-    previous_angle++;
-    delay_ms(3);
-  }
-  
- 
-}
 
 void main(void) {
   
@@ -226,24 +213,6 @@ void main(void) {
   #ifndef SIMULATION_TESTING
   
   
-  
-  // initialise the sensor suite
-  //error_code = iicSensorInit();
-  
-  
-  // write the result of the sensor initialisation to the serial
-  /*
-  if (error_code == NO_ERROR) {
-    sprintf(buffer, "NO_ERROR");
-    //SendTextMsg(buffer);
-    SerialOutputString(buffer, &SCI1);
-  } else {
-    sprintf(buffer, "ERROR %d\r\n");
-    //SendTextMsg(buffer);
-    SerialOutputString(buffer, &SCI1);
-  }
-  */ 
-
   laserInit();
   
   #else
@@ -255,7 +224,7 @@ void main(void) {
 	EnableInterrupts;
   //COPCTL = 7;
   _DISABLE_COP();
-  setServoPose(0, 0);
+  //setServoPose(0, 0);
   
  
 	EnableInterrupts;
@@ -274,7 +243,7 @@ void main(void) {
  
   */
   
-  
+  //change_servo_angle(50, 1); 
   
   for(;;) {
     
@@ -412,6 +381,7 @@ void main(void) {
     */
     
     
+    
     if(new_command == 1){
     
    
@@ -428,7 +398,14 @@ void main(void) {
     if(command[0] == 'A'){
     
     desired_angle = atoi(command + 2);
-    change_servo_angle(desired_angle, 0);
+    previous_angle = desired_angle;
+    setServoPose(2 + desired_angle, 0);
+    }
+    
+    if(command[0] == 'T'){
+      
+      desired_angle = atoi(command + 2);
+      setServoPose(previous_angle, 100*desired_angle);
     }
     
     //Seven Seg Module
