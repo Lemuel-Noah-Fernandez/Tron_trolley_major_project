@@ -111,3 +111,20 @@ Input (laptop): \n
 
 > Output (laptop): "Item not found\n Search Item:"
 
+
+## Using the Unit Test for Each HCS12 Module
+
+LCD Display
+
+Enter:L "string"
+> displays string on LCD display
+
+Enter: A <angle>
+> rotates PTU unti
+
+Enter: S <number>
+>displays number on seven segment
+    
+Enter: M <blank>
+>plays music module
+
