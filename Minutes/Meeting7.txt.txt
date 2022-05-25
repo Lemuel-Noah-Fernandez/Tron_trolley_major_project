@@ -1,0 +1,29 @@
+Meeting 7:
+Date: 25/05/2022
+
+Present: Lem, Will, Duncan, Daniel, Henry
+Missing: N/A
+
+To do today: Finish as much as we can
+
+Previous Actions:
+- Moved to simulation because hardware wasn't working
+
+Regular Items
+- Servo now works but other modules such as gyro, accel and magnetometer are still not functioning
+- Moving to include some physical parts to work
+
+New Items
+- Delegated presentation speaking parts for each person
+- Attempting to add in a music module with Mii music
+
+
+
+Goals for next meetings
+- N/A
+Any Other Business
+- N/A
+
+
+Next Meetings
+- None
