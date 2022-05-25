@@ -74,23 +74,25 @@ Input (laptop): Milk
 
 Expected outputs while traveling to destination
 
-> LCD: "milk: Isle 4"
+> LCD: "milk: aisle 4"
 
-> 7SEG: current isle number (should increment aprox every 3 seconds with demonstration)
+> 7SEG: current aisle number (should increment aprox every 3 seconds with demonstration)
 
-> Python map: Blue dot in isle 4, red dot moving every 3 seconds along isles 
+> Python map: Blue dot in aisle 4, red dot moving every 3 seconds along isles 
 
-> Servo: point in direction of isle 4, change angle every 3 seconds in time with location updates 
+> Servo: point in direction of aisle 4, change angle every 3 seconds in time with location updates 
 
 Expected outputs when arrived
 
-> LCD: "congratulations you've arrived"
+> LCD: "milk: aisle 4"
 
 > 7SEG: 4
 
-> Python map: Blue dot in isle 4, red dot is in isle 4
+> Python map: Blue dot in aisle 4, red dot is in aisle 4
 
-> Servo: lidar points towards top of isle 
+> Laptop: "Aisle reached" 
+
+> Servo: lidar points towards top of aisle 
 
 > Speaker: Plays mii tune
 
