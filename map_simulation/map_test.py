@@ -146,12 +146,15 @@ while exit_game == False:
 
     events = pygame.event.get()
     exit_game = controls(events, trolley, aisle_num_serial)
+
+    #new angle for servo to point to calculations
     tan_angle = ((575 - product_y)/(product_x - (100 + (aisle_num_serial * 250))))
     if (product_x - (100 + (aisle_num_serial * 250))) >= 0:
-        angle = math.degrees(math.atan(tan_angle)
+        angle = math.degrees(math.atan(tan_angle))
     else:
         angle = 180 + math.degrees(math.atan(tan_angle))
 
+    #send out the message for the servo to turn appropriately 
     send_message(serial_sim.serialPort, "A {}".format(angle))
 
     draw_map()
@@ -159,6 +162,8 @@ while exit_game == False:
 
     # Break if the aisle has been reached
     if aisle_num_serial == aisle_num:
+        send_message(serial_sim.serialPort, "T {}".format(10))
+
         font = pygame.font.Font(None, 100)
         text = font.render('Aisle reached!', True, (255,255,255))
         rect = text.get_rect(center=screen.get_rect().center)

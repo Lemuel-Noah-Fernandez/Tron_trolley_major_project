@@ -224,7 +224,7 @@ void main(void) {
 	EnableInterrupts;
   //COPCTL = 7;
   _DISABLE_COP();
-  //setServoPose(0, 0);
+  setServoPose(165, 0);
   
  
 	EnableInterrupts;
