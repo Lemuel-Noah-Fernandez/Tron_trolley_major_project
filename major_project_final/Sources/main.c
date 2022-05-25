@@ -147,7 +147,6 @@ void main(void) {
   for(;;) {
   
     
-    
     if(new_command == 1){
     
    
@@ -177,7 +176,6 @@ void main(void) {
     }
     
     //music unit
-    
     if(command[0] == 'M'){
       making_music(score, 0);
     }
