@@ -169,6 +169,10 @@ while exit_game == False:
         rect = text.get_rect(center=screen.get_rect().center)
         screen.blit(text, rect)
         pygame.display.flip()
+
+        time.sleep(0.1)
+        send_message(serial_sim.serialPort, "M ")
+
         time.sleep(3)
         counter, aisle_num_serial = 0, 0
         #[product_x, product_y, all_locations, clock, trolley, aisle_num, screen, search_word] = search_and_run()

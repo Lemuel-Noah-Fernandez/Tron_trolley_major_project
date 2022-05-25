@@ -13,5 +13,14 @@ __interrupt void TC6_ISR(void);
 
 void Init_TC6 (void);
 
+void play_note(int note_num, int duration_num);
+
+void play_mii();
+
+void putsLCD (char *ptr);
+
+void putcLCD(char cx);
+
+void openLCD(void); 
 
 #endif
