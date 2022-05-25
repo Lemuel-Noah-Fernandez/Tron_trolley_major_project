@@ -16,6 +16,7 @@ Regular Items
 New Items
 - Delegated presentation speaking parts for each person
 - Attempting to add in a music module with Mii music
+- Added some small unit testing in sanity checks for iic modules, however it is commented out due to our physical modules not working
 
 
 
