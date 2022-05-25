@@ -101,3 +101,13 @@ Input (laptop): Gun
 
 > Output (laptop): "Item not found\n Search Item:"
 
+
+Input (laptop): 7
+
+> Output (laptop): "Item not found\n Search Item:"
+
+
+Input (laptop): \n
+
+> Output (laptop): "Item not found\n Search Item:"
+
