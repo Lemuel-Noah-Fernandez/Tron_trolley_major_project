@@ -11,10 +11,11 @@ def get_scores(search, data):
     scores = np.zeros_like(data)
     for i, j in np.ndindex(data.shape):
         scores[i,j] = calculate_similarity(search, data[i,j])
-    return scores 
+    return scores
+  
 
 def main_search():
-    df = pd.read_csv('supermarket_aisles.csv')
+    df = pd.read_csv('map_simulation\super_aisles_alt.csv')
     all_foods = df.to_numpy()
     # remove leading spaces
     for i, j in np.ndindex(all_foods.shape):
@@ -37,6 +38,7 @@ def main_search():
     aisle_name = df.columns[best_idx[1]]
     aisle_row = best_idx[0] + 1
     aisle_type = all_foods[0,best_idx[1]]
+
     found = True
     if best_score < 0.5:
         print("Item not found, please try again.")
@@ -53,3 +55,6 @@ def main_search():
                 print(f"{closest_word} is in {aisle_name} ({aisle_type}).")
 
     return aisle_name, aisle_row, search_word, found
+    
+# Run function
+#main_search()

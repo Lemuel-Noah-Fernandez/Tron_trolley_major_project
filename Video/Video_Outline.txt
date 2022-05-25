@@ -1,0 +1,7 @@
+a) The overall problem being addressed
+
+In a world where automation is slowly taking over the world, the need for automated guidance in the supermarket setting where the number of items grows, is imminent for consumer convenience. In a bid to increase supermarket efficiency and the customer experience, our project, Tron Trolley, eliminates unneccessary time, and delivers convenience for the customer, by providing a trolley that can guide the customer to the aisle of the item location after an item is inputted into the system.
+
+Our TronTrolley displays the trolley's location, the aisle number of the item, and finally the location of that aisle via a pointer. The functionality is split into the following modules
+b) The function of each module (include a brief description of each)
+c) The overall functioning of the system

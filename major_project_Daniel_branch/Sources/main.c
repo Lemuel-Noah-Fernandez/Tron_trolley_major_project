@@ -27,7 +27,7 @@ int rot_z = 100;
 
 //global variables involved in interrupt sequence
 
-char sentence[BUFFER];
+volatile char sentence[BUFFER];
 
 //stores the command and allows you to enter another one   
 char command[BUFFER];   
@@ -36,7 +36,7 @@ char command[BUFFER];
 int j = 0;     
 
 //new command
-int new_command = 0;
+volatile int new_command = 0;
 
 
 
@@ -142,46 +142,6 @@ void printErrorCode(IIC_ERRORS error_code) {
 }
 
 
-/*
-struct MSG_HEADER{
-  int sentinel;
-  char msg_type[8];
-  unsigned int msg_size;
-  unsigned int header_time;
-  int end_sentinel;
-};
-
-struct MSG_GYRO{
-  int sentinel;
-  int rotation_x;
-  int rotation_y;
-  int rotation_z;
-  unsigned int last_sample_time;
-};
-
-struct MSG_BUTTONS{
-  int sentinel;
-  unsigned char button_states;
-  unsigned int last_press_time;
-};
-
-void SendGyroMsg(int rot_x, int rot_y, int rot_z) {
-  struct MSG_HEADER gyro_header = {0xABCD, "gyro", 0, 0, 0xDCBA};
-  struct MSG_GYRO gyro_message = {0x9876, 0, 0, 0, 0};
-                             
-  gyro_header.msg_size = sizeof(struct MSG_GYRO);
-  gyro_header.header_time = TCNT;
-  
-  gyro_message.last_sample_time = TCNT;
-  gyro_message.rotation_x = rot_x;
-  gyro_message.rotation_y = rot_y;
-  gyro_message.rotation_z = rot_z;
-  
-  SerialOutputBytes((char*)&gyro_header, sizeof(struct MSG_HEADER), &SCI1);  
-  SerialOutputBytes((char*)&gyro_message, sizeof(struct MSG_GYRO), &SCI1);  
-}
-
-*/
 
 void delay_ms(unsigned int time){
     int i;
@@ -191,19 +151,6 @@ void delay_ms(unsigned int time){
 }
 
 
-void change_servo_angle(int angle, int old_angle){
-  
-  int previous_angle = old_angle;
-  
-
-  while(previous_angle < angle*4){
-    setServoPose(2 + previous_angle, 0);
-    previous_angle++;
-    delay_ms(3);
-  }
-  
- 
-}
 
 void main(void) {
   
@@ -224,7 +171,11 @@ void main(void) {
   int previous_zmag = 0;
   
   int isle_number = 0;
- 
+  int data[10];
+  int data_count = 0;
+  
+  char* LCD_buffer[100];
+  int sevensegnum;
 
   
 
@@ -237,6 +188,8 @@ void main(void) {
   IIC_ERRORS error_code = NO_ERROR;
   
   char buffer[200];  
+  
+  
   
   unsigned long singleSample;
   
@@ -260,26 +213,6 @@ void main(void) {
   #ifndef SIMULATION_TESTING
   
   
-  sprintf(buffer, "aisle: 3");
-  SendTextMsg(buffer);
-  
-  // initialise the sensor suite
-  //error_code = iicSensorInit();
-  
-  
-  // write the result of the sensor initialisation to the serial
-  
-  if (error_code == NO_ERROR) {
-    sprintf(buffer, "NO_ERROR");
-    SendTextMsg(buffer);
-    //SerialOutputString(buffer, &SCI1);
-  } else {
-    sprintf(buffer, "ERROR %d\r\n");
-    SendTextMsg(buffer);
-    //SerialOutputString(buffer, &SCI1);
-  }
-  
-
   laserInit();
   
   #else
@@ -291,16 +224,38 @@ void main(void) {
 	EnableInterrupts;
   //COPCTL = 7;
   _DISABLE_COP();
-  setServoPose(0, 0);
+  //setServoPose(0, 0);
   
  
 	EnableInterrupts;
     
+    
+    
+  sevensegmodule(0);
+  
+  sprintf(buffer, "aisle: 1");
+  
+  
+  /*
+  while(1){
+   SendTextMsg(buffer);
+  }
+ 
+  */
+  
+  //change_servo_angle(50, 1); 
+  
   for(;;) {
+    
+    
+    
   
     //SendGyroMsg(rot_x, rot_y, rot_z);
   
     current_time = TCNT;
+    
+    
+    /*
   
     #ifndef SIMULATION_TESTING
   
@@ -330,11 +285,9 @@ void main(void) {
 
     }
     
-    
-    
-    //GetLatestLaserSample(&singleSample);
         
     #else
+    
     
     // inject some values for simulation
     read_gyro.x = 123; read_gyro.y = 313; read_gyro.z = 1002;
@@ -346,7 +299,6 @@ void main(void) {
     // convert the acceleration to a scaled value
     convertUnits(&read_accel, &scaled_accel);    
     
- 
     
     time_diff = current_time - previous_time;
     float_time_diff = (float)time_diff/(24000000.0);
@@ -366,6 +318,9 @@ void main(void) {
       
     }
     
+    
+    
+    
     if(read_gyro.x < -10000) {
       omega = 0;
     } else{
@@ -383,15 +338,16 @@ void main(void) {
     angle = angle + float_time_diff* (float)omega;
     scaled_angle = angle/13.88888;
     
-    
-    
+   
+    /*
     if(test_changed(previous_xmag, previous_ymag, previous_zmag, read_magnet) == 1){
       isle_number++;
       sprintf(buffer, "aisle: %d\n", isle_number);
-      //SerialOutputString(buffer, &SCI1);
-      SendTextMsg(buffer);
+      SerialOutputString(buffer, &SCI1);
+      //SendTextMsg(buffer);
      
     }
+    
     
     
     if(count%100 == 0){
@@ -400,8 +356,8 @@ void main(void) {
     sprintf(buffer,"w is %d, angle is %f\n", omega, angle);
     
     sprintf(buffer, "aisle: %d", isle_number);
-    SendTextMsg(buffer);
-    isle_number++;
+    //SendTextMsg(buffer);
+    //isle_number++;
     
     
     //print magnet data
@@ -413,44 +369,71 @@ void main(void) {
     
     }
      
-    //format the string of the sensor data to go the the serial    
-    //sprintf(buffer,"%f, %d\r\n",float_time_diff, read_gyro.x);
 
-    
-    /*
-    if(finish_flag == 0){
-      change_servo_angle(0);
-      delay_ms(100);
-      finish_flag = 1;
-    } else if(finish_flag == 1){
-      change_servo_angle(30);
-      delay_ms(100);
-      finish_flag = 2; 
-    }
-    */
-    
-    
-    if(new_command == 1){
-    
-    previous_angle = desired_angle;
-    desired_angle = atoi(command);
-    change_servo_angle(desired_angle, previous_angle);
-    sevensegmodule(atoi(command));
-    
-    new_command = 0;
-    
-    
-    }
+  
 
-    
-    
     if(count%5 == 0){
       previous_xmag = read_magnet.x;
       previous_ymag = read_magnet.y;
       previous_zmag = read_magnet.z;
     }
     
+    */
     
+    
+    
+    if(new_command == 1){
+    
+   
+    //LCD processing
+    if(command[0] == 'L'){
+    
+    strcpy(LCD_buffer, command + 2);
+    openLCD();
+    putsLCD(LCD_buffer); 
+    
+    }
+    
+    //Angle Processing
+    if(command[0] == 'A'){
+    
+    desired_angle = atoi(command + 2);
+    previous_angle = desired_angle;
+    setServoPose(2 + desired_angle, 0);
+    }
+    
+    if(command[0] == 'T'){
+      
+      desired_angle = atoi(command + 2);
+      setServoPose(previous_angle, 100*desired_angle);
+    }
+    
+    //Seven Seg Module
+    if(command[0] == 'S'){
+     
+     sevensegnum = atoi(command + 2);
+     //sevensegmodule(sevensegnum);
+    }
+    
+    //request aisle
+    if(command[0] == 'R'){
+      
+      isle_number++;
+      if(isle_number == 6){
+        isle_number == 0;
+      }
+      
+      sevensegmodule(isle_number);
+      sprintf(buffer, "aisle: %d", isle_number);
+      SendTextMsg(buffer);
+    }
+    
+   
+    
+    new_command = 0;
+    
+    }
+   
     previous_time = current_time;
     count++;
     
@@ -535,4 +518,3 @@ __interrupt void Serial_ReadISR(void){
 
 
 }
-
