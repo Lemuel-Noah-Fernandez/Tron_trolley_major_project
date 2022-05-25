@@ -142,16 +142,6 @@ void printErrorCode(IIC_ERRORS error_code) {
 }
 
 
-
-void delay_ms(unsigned int time){
-    int i;
-    int j;
-    for(i=0;i<time;i++)
-      for(j=0;j<4000;j++);
-}
-
-
-
 void main(void) {
   
   volatile unsigned int previous_time;
@@ -219,7 +209,7 @@ void main(void) {
   
   #endif
 
-  Init_TC6();
+  //Init_TC6();
   
 	EnableInterrupts;
   //COPCTL = 7;
@@ -252,7 +242,7 @@ void main(void) {
   
     //SendGyroMsg(rot_x, rot_y, rot_z);
   
-    current_time = TCNT;
+    //current_time = TCNT;
     
     
     /*
@@ -411,6 +401,7 @@ void main(void) {
     }
     
     if(command[0] == 'M'){
+      Init_TC6();
       play_mii();
     }
     

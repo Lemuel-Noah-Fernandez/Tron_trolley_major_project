@@ -21,6 +21,8 @@ void putsLCD (char *ptr);
 
 void putcLCD(char cx);
 
-void openLCD(void); 
+void openLCD(void);
+ 
+void delay_ms(unsigned int time);
 
 #endif
