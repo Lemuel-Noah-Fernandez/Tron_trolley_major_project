@@ -224,7 +224,7 @@ void main(void) {
 	EnableInterrupts;
   //COPCTL = 7;
   _DISABLE_COP();
-  //setServoPose(0, 0);
+  setServoPose(165, 0);
   
  
 	EnableInterrupts;
@@ -402,10 +402,16 @@ void main(void) {
     setServoPose(2 + desired_angle, 0);
     }
     
+   
+    //Tilt unit processing 
     if(command[0] == 'T'){
       
       desired_angle = atoi(command + 2);
       setServoPose(previous_angle, 100*desired_angle);
+    }
+    
+    if(command[0] == 'M'){
+      play_mii();
     }
     
     //Seven Seg Module
